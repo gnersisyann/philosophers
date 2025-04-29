@@ -6,7 +6,7 @@
 /*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 19:15:53 by ganersis          #+#    #+#             */
-/*   Updated: 2025/04/29 19:17:03 by ganersis         ###   ########.fr       */
+/*   Updated: 2025/04/29 20:23:53 by ganersis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,12 @@ bool	init_mutexes(t_table *table)
 
 static int	check_bounds(int value, const char *name)
 {
-	if (value < 0 || value > INT_MAX)
+	if (value <= 0 || value > INT_MAX)
 	{
-		printf(RED "Error:" RESET " %s is out of range. Must be a" \
+		printf(RED "Error:" RESET " %s is out of range. Must be a"
 					" positive integer within the range of \
-					" RED "int" RESET ".\n", name);
+					" RED "int" RESET ".\n",
+				name);
 		return (1);
 	}
 	return (0);
@@ -106,12 +107,12 @@ t_table	*parse_args(char **argv)
 		|| check_bounds(table->time_to_eat, "Time to eat")
 		|| check_bounds(table->time_to_sleep, "Time to sleep") || (argv[5]
 			&& check_bounds(table->must_eat_count, "Eat count")))
-		return (NULL);
+		return (free(table), NULL);
 	table->philos = init_philos(table);
 	if (!table->philos)
-		return (NULL);
+		return (free(table), NULL);
 	if (!init_mutexes(table))
-		return (NULL);
+		return (free(table), NULL);
 	table->sim_stop = false;
 	return (table);
 }

@@ -6,13 +6,11 @@
 /*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 19:15:35 by ganersis          #+#    #+#             */
-/*   Updated: 2025/04/29 19:35:29 by ganersis         ###   ########.fr       */
+/*   Updated: 2025/04/29 20:55:09 by ganersis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
-#include <pthread.h>
-#include <stdbool.h>
 
 void	*one_philo(t_philo *philo)
 {
