@@ -6,7 +6,7 @@
 /*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 19:17:11 by ganersis          #+#    #+#             */
-/*   Updated: 2025/04/29 19:36:08 by ganersis         ###   ########.fr       */
+/*   Updated: 2025/04/29 19:39:10 by ganersis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ bool	has_simulation_stopped(t_table *table)
 void	print_status(t_philo *philo, char *str)
 {
 	pthread_mutex_lock(&philo->table->write_lock);
-	if (!has_simulation_stopped(philo->table) || ft_strcmp(str, RED "died" RESET) == 0)
+	if (!has_simulation_stopped(philo->table) || \
+		ft_strcmp(str, RED "died" RESET) == 0)
 	{
 		printf("%ld %d %s\n", get_time_in_ms() - philo->table->start_time,
 			philo->id + 1, str);
