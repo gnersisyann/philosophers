@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   monitor.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/29 19:15:41 by ganersis          #+#    #+#             */
+/*   Updated: 2025/04/29 19:36:17 by ganersis         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/philo.h"
 
 static void	set_sim_stop_flag(t_table *table, bool state)
@@ -15,7 +27,7 @@ static bool	philo_die(t_philo *philo)
 	if (time - philo->last_meal >= philo->table->time_to_die)
 	{
 		set_sim_stop_flag(philo->table, true);
-		print_status(philo, "died");
+		print_status(philo, RED "died" RESET);
 		pthread_mutex_unlock(&philo->meal_time_lock);
 		return (true);
 	}

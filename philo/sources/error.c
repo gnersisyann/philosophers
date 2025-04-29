@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   error.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/29 19:16:11 by ganersis          #+#    #+#             */
+/*   Updated: 2025/04/29 19:16:15 by ganersis         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/philo.h"
 
 int	msg(char *str, const char *detail, int exit_no)
@@ -38,7 +50,7 @@ int	error_failure(char *str, char *details, t_table *table)
 
 void	destroy_mutexes(t_table *table)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (++i < table->nb_philos)

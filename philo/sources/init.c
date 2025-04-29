@@ -1,5 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/29 19:15:53 by ganersis          #+#    #+#             */
+/*   Updated: 2025/04/29 19:17:03 by ganersis         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/philo.h"
-#include <pthread.h>
 
 t_philo	*init_philos(t_table *table)
 {
@@ -68,9 +79,9 @@ static int	check_bounds(int value, const char *name)
 {
 	if (value < 0 || value > INT_MAX)
 	{
-		printf(RED "Error:" RESET " %s is out of range. Must be a"
-					" positive integer within the range of " RED "int" RESET ".\n",
-				name);
+		printf(RED "Error:" RESET " %s is out of range. Must be a" \
+					" positive integer within the range of \
+					" RED "int" RESET ".\n", name);
 		return (1);
 	}
 	return (0);
@@ -93,12 +104,9 @@ t_table	*parse_args(char **argv)
 	if (check_bounds(table->nb_philos, "Philosopher count")
 		|| check_bounds(table->time_to_die, "Time to die")
 		|| check_bounds(table->time_to_eat, "Time to eat")
-		|| check_bounds(table->time_to_sleep, "Time to sleep")
-		|| (argv[5] && check_bounds(table->must_eat_count,
-				"Eat count")))
-	{
+		|| check_bounds(table->time_to_sleep, "Time to sleep") || (argv[5]
+			&& check_bounds(table->must_eat_count, "Eat count")))
 		return (NULL);
-	}
 	table->philos = init_philos(table);
 	if (!table->philos)
 		return (NULL);

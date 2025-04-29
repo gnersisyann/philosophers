@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/29 19:17:21 by ganersis          #+#    #+#             */
+/*   Updated: 2025/04/29 19:19:29 by ganersis         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILO_H
 # define PHILO_H
 
@@ -62,7 +74,7 @@ void					sim_start_delay(time_t start_time);
 void					print_status(t_philo *philo, char *str);
 void					check_sleep(t_table *table, time_t sleep_time);
 void					think(t_philo *philo, bool silent);
-void					eat_and_sleep(t_philo *philo);
+int						eat_and_sleep(t_philo *philo);
 bool					has_simulation_stopped(t_table *table);
 int						ft_strcmp(const char *s1, const char *s2);
 #endif
