@@ -6,7 +6,7 @@
 /*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 19:17:21 by ganersis          #+#    #+#             */
-/*   Updated: 2025/04/29 23:54:19 by ganersis         ###   ########.fr       */
+/*   Updated: 2025/05/01 15:47:49 by ganersis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <sys/stat.h>
 # include <sys/time.h>
 # include <unistd.h>
 
@@ -34,12 +35,12 @@
 # define CYAN "\033[0;36m"
 # define BLUE "\033[0;34m"
 
-# define SEM_ERR 40
-# define PTHREAD_ERR 41
+# define PTHREAD_ERR 40
+# define SEM_ERR 41
 # define FEED 42
 # define DEAD 43
 
-# define CHILD_EXIT_ERR_PTHREAD 40
+# define PTHREAD_ERR 40
 # define CHILD_EXIT_ERR_SEM 41
 # define CHILD_EXIT_PHILO_FULL 42
 # define CHILD_EXIT_PHILO_DEAD 43
@@ -56,7 +57,7 @@ typedef struct s_philo	t_philo;
 typedef struct s_table
 {
 	time_t				start_time;
-	unsigned int		nb_philos;
+	int					nb_philos;
 	time_t				time_to_die;
 	time_t				time_to_eat;
 	time_t				time_to_sleep;
@@ -64,7 +65,7 @@ typedef struct s_table
 	sem_t				*sem_forks;
 	sem_t				*sem_write;
 	sem_t				*sem_philo_full;
-	unsigned int		philo_full_count;
+	int					philo_full_count;
 	sem_t				*sem_philo_dead;
 	sem_t				*sem_stop;
 	bool				stop_sim;
@@ -77,7 +78,7 @@ typedef struct s_table
 
 typedef struct s_philo
 {
-	pthread_t			personal_grim_reaper;
+	pthread_t			personal_monitor;
 	sem_t				*sem_forks;
 	sem_t				*sem_write;
 	sem_t				*sem_philo_full;
@@ -101,7 +102,7 @@ time_t					get_time_in_ms(void);
 bool					start_program(t_table *table);
 void					destroy_mutexes(t_table *table);
 void					*free_table(t_table *table);
-void					end_program(t_table *table);
+int						end_program(t_table *table);
 void					sim_start_delay(time_t start_time);
 void					print_status(t_philo *philo, char *str);
 void					check_sleep(time_t sleep_time);
@@ -119,4 +120,8 @@ int						table_cleanup(t_table *table, int exit_code);
 void					*satiety_routine(void *args);
 void					*starvation_routine(void *args);
 void					philosopher(t_table *table);
+void					*personal_monitor(void *args);
+void					init_philo(t_table *table, t_philo *philo);
+bool					end_condition_reached(t_table *table, t_philo *philo);
+void					child_exit(t_table *table, int exit_code);
 #endif

@@ -19,7 +19,7 @@ static void	one_philo(t_philo *philo)
 	free_table(philo->table);
 	exit(DEAD);
 }
-// add funcs
+
 void	philosopher(t_table *table)
 {
 	t_philo	*philo;
@@ -27,20 +27,19 @@ void	philosopher(t_table *table)
 	philo = table->this_philo;
 	if (philo->table->nb_philos == 1)
 		one_philo(philo);
-	init_philo_ipc(table, philo);
-	if (philo->table->must_eat_count == 0)
-	{
-		sem_post(philo->sem_philo_full);
-		child_exit(table, FEED);
-	}
-	if (philo->table->time_to_die == 0)
-	{
-		sem_post(philo->sem_philo_dead);
-		child_exit(table, DEAD);
-	}
+	init_philo(table, philo);
 	sem_wait(philo->sem_meal);
 	philo->last_meal = philo->table->start_time;
 	sem_post(philo->sem_meal);
 	sim_start_delay(philo->table->start_time);
-	philosopher_routine(philo);
+	if (philo->id % 2)
+	{
+		think(philo, true);
+		usleep(100);
+	}
+	while (1)
+	{
+		eat_and_sleep(philo);
+		think(philo, false);
+	}
 }

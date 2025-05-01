@@ -19,17 +19,23 @@ void	*error_null(char *str, char *details, t_table *table)
 
 void	child_exit(t_table *table, int exit_code)
 {
-	sem_post(table->this_philo->sem_meal);
-	pthread_join(table->this_philo->personal_grim_reaper, NULL);
+	if (table->this_philo->sem_meal)
+		sem_post(table->this_philo->sem_meal);
+	pthread_join(table->this_philo->personal_monitor, NULL);
 	if (exit_code == SEM_ERR)
 		msg("%s error: Could not create semaphore.\n", NULL, 0);
 	if (exit_code == PTHREAD_ERR)
 		msg("%s error: Could not create thread.\n", NULL, 0);
-	sem_close(table->this_philo->sem_forks);
-	sem_close(table->this_philo->sem_philo_full);
-	sem_close(table->this_philo->sem_philo_dead);
-	sem_close(table->this_philo->sem_write);
-	sem_close(table->this_philo->sem_meal);
+	if (table->this_philo->sem_forks)
+		sem_close(table->this_philo->sem_forks);
+	if (table->this_philo->sem_philo_full)
+		sem_close(table->this_philo->sem_philo_full);
+	if (table->this_philo->sem_philo_dead)
+		sem_close(table->this_philo->sem_philo_dead);
+	if (table->this_philo->sem_write)
+		sem_close(table->this_philo->sem_write);
+	if (table->this_philo->sem_meal)
+		sem_close(table->this_philo->sem_meal);
 	free_table(table);
 	exit(exit_code);
 }
@@ -60,4 +66,26 @@ int	sem_error_cleanup(t_table *table)
 	unlink_global_sems();
 	return (error_failure("%s error: Could not create semaphore.\n", NULL,
 			table));
+}
+
+void	*free_table(t_table *table)
+{
+	if (!table)
+		return (NULL);
+	if (table->philos != NULL)
+	{
+		free(table->philos);
+		table->philos = NULL;
+	}
+	if (table->pids)
+	{
+		free(table->pids);
+		table->pids = NULL;
+	}
+	if (table)
+	{
+		free(table);
+		table = NULL;
+	}
+	return (NULL);
 }

@@ -1,5 +1,15 @@
 #include "../include/philo_bonus.h"
 
+bool	has_simulation_stopped(t_table *table)
+{
+	bool	ret;
+
+	sem_wait(table->sem_stop);
+	ret = table->stop_sim;
+	sem_post(table->sem_stop);
+	return (ret);
+}
+
 void	check_sleep(time_t sleep_time)
 {
 	time_t	wake_up;
@@ -9,12 +19,6 @@ void	check_sleep(time_t sleep_time)
 		usleep(100);
 }
 
-bool	has_simulation_stopped(t_table *table)
-{
-	// Пока нет логики остановки, всегда возвращаем false
-	// Позже можно добавить флаг в shared memory или семафорную сигнализацию
-	return (false);
-}
 void	think(t_philo *philo, bool silent)
 {
 	time_t	time_to_think;
@@ -29,7 +33,7 @@ void	think(t_philo *philo, bool silent)
 		time_to_think = 200;
 	if (!has_simulation_stopped(philo->table) && !silent)
 		print_status(philo, YELLOW "is thinking" RESET);
-	check_sleep(philo->table, time_to_think);
+	check_sleep(time_to_think);
 }
 
 void	print_status(t_philo *philo, char *str)
@@ -61,10 +65,10 @@ int	eat_and_sleep(t_philo *philo)
 	philo->last_meal = get_time_in_ms();
 	++philo->times_ate;
 	print_status(philo, GREEN "is eating" RESET);
-	check_sleep(philo->table, philo->table->time_to_eat);
+	check_sleep(philo->table->time_to_eat);
 	sem_post(philo->table->sem_forks);
 	sem_post(philo->table->sem_forks);
 	print_status(philo, GRAY "is sleeping" RESET);
-	check_sleep(philo->table, philo->table->time_to_sleep);
+	check_sleep(philo->table->time_to_sleep);
 	return (0);
 }

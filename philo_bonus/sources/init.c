@@ -5,8 +5,7 @@ static int	check_bounds(int value, const char *name)
 	if (value <= 0 || value > INT_MAX)
 	{
 		printf(RED "Error:" RESET " %s is out of range. Must be a"
-					" positive integer within the range of \
-					" RED "int" RESET ".\n",
+					" positive integer within the range of" RED " int" RESET ".\n",
 				name);
 		return (1);
 	}
@@ -68,13 +67,14 @@ static bool	set_philo_sem_names(t_philo *philo)
 	philo->sem_meal_name = set_local_sem_name(SEM_NAME_MEAL, philo->id + 1);
 	if (philo->sem_meal_name == NULL)
 		return (false);
+	free(philo->sem_meal_name);
 	return (true);
 }
 
 static t_philo	*init_philosophers(t_table *table)
 {
-	t_philo			*philos;
-	unsigned int	i;
+	t_philo	*philos;
+	int		i;
 
 	philos = (t_philo *)malloc(table->nb_philos * sizeof(t_philo));
 	if (!philos)
@@ -84,7 +84,7 @@ static t_philo	*init_philosophers(t_table *table)
 	{
 		philos[i].table = table;
 		philos[i].id = i;
-		if (!set_philo_sem_names(philos[i]))
+		if (!set_philo_sem_names(&philos[i]))
 			return (error_null("%s error: Could not allocate memory.\n", NULL,
 					table));
 		philos[i].times_ate = 0;
@@ -116,6 +116,7 @@ t_table	*parse_args(char **argv)
 			&& check_bounds(table->must_eat_count, "Eat count")))
 	{
 		free(table);
+		table = NULL;
 		return (NULL);
 	}
 	table->philo_full_count = 0;

@@ -17,12 +17,12 @@ bool	start_program(t_table *table)
 	int		i;
 	pid_t	pid;
 
-	table->start_time = get_time_in_ms() + ((table->nb_philos * 2) * 10);
+	table->start_time = get_time_in_ms() + (table->nb_philos * 20);
 	i = -1;
 	while (++i < table->nb_philos)
 	{
 		pid = fork();
-		if (pid == -1)
+		if (pid < 0)
 			return (error_failure("%s error: Could not fork child.\n", NULL,
 					table));
 		else if (pid > 0)
@@ -38,10 +38,12 @@ bool	start_program(t_table *table)
 	return (true);
 }
 
-void	end_program(t_table *table)
+int	end_program(t_table *table)
 {
 	int	i;
 
+	if (!table)
+		return (0);
 	i = -1;
 	while (++i < table->nb_philos)
 	{
@@ -51,5 +53,5 @@ void	end_program(t_table *table)
 			continue ;
 		}
 	}
-	free_table(table);
+	return (0);
 }

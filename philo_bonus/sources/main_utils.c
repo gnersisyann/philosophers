@@ -6,7 +6,7 @@
 /*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 19:15:48 by ganersis          #+#    #+#             */
-/*   Updated: 2025/04/29 22:01:09 by ganersis         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:48:06 by ganersis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,10 @@ int	table_cleanup(t_table *table, int exit_code)
 {
 	if (table != NULL)
 	{
-		pthread_join(table->famine_reaper, NULL);
-		pthread_join(table->gluttony_reaper, NULL);
+		if (table->satiety)
+			pthread_join(table->satiety, NULL);
+		if (table->starvation)
+			pthread_join(table->starvation, NULL);
 		sem_close(table->sem_forks);
 		sem_close(table->sem_write);
 		sem_close(table->sem_philo_full);
