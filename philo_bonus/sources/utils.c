@@ -9,9 +9,9 @@ char	*ft_utoa(unsigned int nb, size_t len)
 		return (NULL);
 	ret[len] = '\0';
 	len--;
-	while (nb % 10)
+	while (len > 0)
 	{
-		ret[len--] = (nb % 10) + '0';
+		ret[--len] = (nb % 10) + '0';
 		nb /= 10;
 	}
 	return (ret);

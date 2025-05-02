@@ -1,4 +1,5 @@
 #include "../include/philo_bonus.h"
+#include <semaphore.h>
 
 bool	has_simulation_stopped(t_table *table)
 {
@@ -52,22 +53,30 @@ int	eat_and_sleep(t_philo *philo)
 {
 	if (has_simulation_stopped(philo->table))
 		return (1);
+	// Вход в критическую секцию официанта
+	sem_wait(philo->table->sem_waiter);
+	// Захват обеих вилок подряд, находясь под контролем официанта
 	sem_wait(philo->table->sem_forks);
 	print_status(philo, DARK_GREEN "has taken a fork" RESET);
 	sem_wait(philo->table->sem_forks);
 	print_status(philo, DARK_GREEN "has taken a fork" RESET);
+	// Проверка: симуляция остановлена? => вернуть вилки
 	if (has_simulation_stopped(philo->table))
 	{
 		sem_post(philo->table->sem_forks);
 		sem_post(philo->table->sem_forks);
+		sem_post(philo->table->sem_waiter);
 		return (1);
 	}
 	philo->last_meal = get_time_in_ms();
 	++philo->times_ate;
 	print_status(philo, GREEN "is eating" RESET);
 	check_sleep(philo->table->time_to_eat);
+	// Отпускание вилок
 	sem_post(philo->table->sem_forks);
 	sem_post(philo->table->sem_forks);
+	// Выход из критической секции официанта
+	sem_post(philo->table->sem_waiter);
 	print_status(philo, GRAY "is sleeping" RESET);
 	check_sleep(philo->table->time_to_sleep);
 	return (0);

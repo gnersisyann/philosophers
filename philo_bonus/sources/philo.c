@@ -32,11 +32,8 @@ void	philosopher(t_table *table)
 	philo->last_meal = philo->table->start_time;
 	sem_post(philo->sem_meal);
 	sim_start_delay(philo->table->start_time);
-	if (philo->id % 2)
-	{
-		think(philo, true);
+	if (philo->id % 2 == 0)
 		usleep(100);
-	}
 	while (1)
 	{
 		eat_and_sleep(philo);

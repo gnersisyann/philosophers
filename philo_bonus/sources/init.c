@@ -33,6 +33,10 @@ static bool	init_sems(t_table *table)
 	table->sem_stop = sem_open(SEM_NAME_STOP, O_CREAT, S_IRUSR | S_IWUSR, 1);
 	if (table->sem_stop == SEM_FAILED)
 		return (sem_error_cleanup(table));
+	table->sem_waiter = sem_open(SEM_NAME_WAITER, O_CREAT, S_IRUSR | S_IWUSR,
+			table->nb_philos > 1 ? table->nb_philos / 2 : 1);
+	if (table->sem_waiter == SEM_FAILED)
+		return (sem_error_cleanup(table));
 	return (true);
 }
 
@@ -67,7 +71,6 @@ static bool	set_philo_sem_names(t_philo *philo)
 	philo->sem_meal_name = set_local_sem_name(SEM_NAME_MEAL, philo->id + 1);
 	if (philo->sem_meal_name == NULL)
 		return (false);
-	free(philo->sem_meal_name);
 	return (true);
 }
 

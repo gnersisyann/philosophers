@@ -6,7 +6,7 @@
 /*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 19:17:21 by ganersis          #+#    #+#             */
-/*   Updated: 2025/05/01 15:47:49 by ganersis         ###   ########.fr       */
+/*   Updated: 2025/05/02 21:08:15 by ganersis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@
 # define CHILD_EXIT_PHILO_DEAD 43
 
 # define SEM_NAME_FORKS "/philo_global_forks"
+# define SEM_NAME_WAITER "/philo_global_waiter"
 # define SEM_NAME_WRITE "/philo_global_write"
 # define SEM_NAME_FULL "/philo_global_full"
 # define SEM_NAME_DEAD "/philo_global_dead"
@@ -71,6 +72,9 @@ typedef struct s_table
 	bool				stop_sim;
 	t_philo				*philos;
 	t_philo				*this_philo;
+
+	sem_t				*sem_waiter;
+
 	pid_t				*pids;
 	pthread_t			satiety;
 	pthread_t			starvation;
@@ -85,7 +89,7 @@ typedef struct s_philo
 	sem_t				*sem_philo_dead;
 	sem_t				*sem_meal;
 	char				*sem_meal_name;
-	unsigned int		nb_forks_held;
+	int					nb_forks_held;
 	unsigned int		id;
 	unsigned int		times_ate;
 	bool				ate_enough;
@@ -124,4 +128,5 @@ void					*personal_monitor(void *args);
 void					init_philo(t_table *table, t_philo *philo);
 bool					end_condition_reached(t_table *table, t_philo *philo);
 void					child_exit(t_table *table, int exit_code);
+bool					start_monitors_threads(t_table *table);
 #endif

@@ -6,7 +6,7 @@
 /*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 19:15:45 by ganersis          #+#    #+#             */
-/*   Updated: 2025/05/01 14:59:31 by ganersis         ###   ########.fr       */
+/*   Updated: 2025/05/02 21:02:55 by ganersis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,17 @@ int	main(int argc, char **argv)
 {
 	t_table	*table;
 
-	table = NULL;
 	if (arg_check(argc))
 		return (1);
 	table = parse_args(argv);
 	if (!table)
 		return (1);
 	if (!start_program(table))
-		return (1);
-	if (end_program(table) == -1)
 		return (table_cleanup(table, 1));
+	if (!start_monitors_threads(table))
+		return (table_cleanup(table, 1));
+	pthread_join(table->starvation, NULL);
+	pthread_join(table->satiety, NULL);
+	end_program(table);
 	return (table_cleanup(table, 0));
 }

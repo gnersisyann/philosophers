@@ -33,8 +33,6 @@ bool	start_program(t_table *table)
 			philosopher(table);
 		}
 	}
-	if (start_monitors_threads(table) == false)
-		return (false);
 	return (true);
 }
 
@@ -42,16 +40,11 @@ int	end_program(t_table *table)
 {
 	int	i;
 
-	if (!table)
-		return (0);
-	i = -1;
-	while (++i < table->nb_philos)
-	{
-		if (kill(table->pids[i], SIGKILL) == -1)
-		{
-			error_failure("Error killing philosopher", NULL, table);
-			continue ;
-		}
-	}
+	i = 0;
+	while (i < table->nb_philos)
+		kill(table->pids[i++], SIGKILL);
+	pthread_join(table->satiety, NULL);
+	pthread_join(table->starvation, NULL);
+	sem_post(table->sem_waiter);
 	return (0);
 }

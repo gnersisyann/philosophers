@@ -6,7 +6,7 @@
 /*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 19:15:48 by ganersis          #+#    #+#             */
-/*   Updated: 2025/05/01 17:48:06 by ganersis         ###   ########.fr       */
+/*   Updated: 2025/05/02 21:09:54 by ganersis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	arg_check(int argc)
 		printf("Usage: " GREEN "./philo_bonus" RESET " N T_DIE T_EAT"
 				" T_SLEEP [EAT_COUNT]\n\n");
 		printf("Arguments:\n");
-		printf("  N         - number of threads\n");
+		printf("  N         - number of processes\n");
 		printf("  T_DIE     - time to die (ms)\n");
 		printf("  T_EAT     - time to eat (ms)\n");
 		printf("  T_SLEEP   - time to sleep (ms)\n");
@@ -46,6 +46,7 @@ int	table_cleanup(t_table *table, int exit_code)
 		sem_close(table->sem_philo_full);
 		sem_close(table->sem_philo_dead);
 		sem_close(table->sem_stop);
+		sem_close(table->sem_waiter);
 		unlink_global_sems();
 		free_table(table);
 	}

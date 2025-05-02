@@ -4,6 +4,7 @@ RM						=	rm -f
 
 NAME					=	bonus
 PHILOSOPHERS			=	philo_bonus
+MAKEFILE				=	Makefile
 
 PHILO_SRC_DIR			=	sources/
 
@@ -33,7 +34,7 @@ $(OBJ_DIR)/%.o:			%.c
 						@mkdir -p $(dir $@)
 						$(CC) $(CFLAGS) -c $< -o $@
 
-$(PHILOSOPHERS):		$(PHILO_OBJ) $(PHILO_INC)
+$(PHILOSOPHERS):		$(PHILO_OBJ) $(PHILO_INC) $(MAKEFILE)
 						$(CC) $(CFLAGS) $(PHILO_OBJ) $(LDFLAGS) -o $@
 
 clean:

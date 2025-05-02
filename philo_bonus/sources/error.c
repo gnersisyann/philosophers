@@ -54,6 +54,7 @@ void	unlink_global_sems(void)
 	sem_unlink(SEM_NAME_FULL);
 	sem_unlink(SEM_NAME_DEAD);
 	sem_unlink(SEM_NAME_STOP);
+	sem_unlink(SEM_NAME_WAITER);
 }
 
 int	sem_error_cleanup(t_table *table)
@@ -63,6 +64,7 @@ int	sem_error_cleanup(t_table *table)
 	sem_close(table->sem_philo_full);
 	sem_close(table->sem_philo_dead);
 	sem_close(table->sem_stop);
+	sem_close(table->sem_waiter);
 	unlink_global_sems();
 	return (error_failure("%s error: Could not create semaphore.\n", NULL,
 			table));
