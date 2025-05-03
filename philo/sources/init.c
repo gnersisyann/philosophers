@@ -6,7 +6,7 @@
 /*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 19:15:53 by ganersis          #+#    #+#             */
-/*   Updated: 2025/05/03 18:17:33 by ganersis         ###   ########.fr       */
+/*   Updated: 2025/05/03 22:36:22 by ganersis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ t_philo	*init_philos(t_table *table)
 		philos[i].table = table;
 		philos[i].fork[0] = philos[i].id;
 		philos[i].fork[1] = (philos[i].id + 1) % philos->table->nb_philos;
+		philos[i].last_meal = 0;
 		if (philos[i].id % 2 == 0)
 		{
 			philos[i].fork[0] = (philos[i].id + 1) % philos->table->nb_philos;
