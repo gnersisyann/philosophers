@@ -1,6 +1,6 @@
 #include "../include/philo_bonus.h"
 
-static int	kill_all_philos(t_table *table, int exit_code)
+int	kill_all_philos(t_table *table, int exit_code)
 {
 	int	i;
 
@@ -18,9 +18,6 @@ void	*satiety_routine(void *args)
 	t_table	*table;
 
 	table = (t_table *)args;
-	if (table->must_eat_count < 0 || table->time_to_die == 0
-		|| table->nb_philos == 1)
-		return (NULL);
 	sim_start_delay(table->start_time);
 	while (table->philo_full_count < table->nb_philos)
 	{

@@ -6,7 +6,7 @@
 /*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 19:17:21 by ganersis          #+#    #+#             */
-/*   Updated: 2025/05/03 19:55:17 by ganersis         ###   ########.fr       */
+/*   Updated: 2025/05/03 22:08:49 by ganersis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,4 +124,5 @@ bool					end_condition_reached(t_table *table, t_philo *philo);
 void					child_exit(t_table *table, int exit_code);
 bool					start_monitors_threads(t_table *table);
 bool					init_local_semaphores(t_philo *philo);
+int						kill_all_philos(t_table *table, int exit_code);
 #endif

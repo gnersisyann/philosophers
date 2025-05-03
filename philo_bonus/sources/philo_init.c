@@ -22,11 +22,11 @@ static bool	init_global_semaphores(t_philo *philo)
 
 bool	init_local_semaphores(t_philo *philo)
 {
+	sem_unlink(philo->sem_meal_name);
 	philo->sem_meal = sem_open(philo->sem_meal_name, O_CREAT, S_IRUSR | S_IWUSR,
 			1);
 	if (philo->sem_meal == SEM_FAILED)
 		return (false);
-	
 	return (true);
 }
 
