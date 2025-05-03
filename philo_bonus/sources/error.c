@@ -72,17 +72,28 @@ int	sem_error_cleanup(t_table *table)
 
 void	*free_table(t_table *table)
 {
+	int	i;
+
+	i = -1;
 	if (!table)
 		return (NULL);
-	if (table->philos != NULL)
-	{
-		free(table->philos);
-		table->philos = NULL;
-	}
 	if (table->pids)
 	{
 		free(table->pids);
 		table->pids = NULL;
+	}
+	while (++i < table->nb_philos)
+	{
+		if (table->philos[i].sem_meal_name)
+		{
+			free(table->philos[i].sem_meal_name);
+			table->philos[i].sem_meal_name = NULL;
+		}
+	}
+	if (table->philos != NULL)
+	{
+		free(table->philos);
+		table->philos = NULL;
 	}
 	if (table)
 	{

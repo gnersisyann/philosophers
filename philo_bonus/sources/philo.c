@@ -2,20 +2,12 @@
 
 static void	one_philo(t_philo *philo)
 {
-	philo->sem_philo_full = sem_open(SEM_NAME_FULL, O_CREAT, S_IRUSR | S_IWUSR,
-			philo->table->nb_philos);
-	if (philo->sem_philo_full == SEM_FAILED)
-		exit(SEM_ERR);
-	sem_wait(philo->sem_philo_full);
 	sim_start_delay(philo->table->start_time);
-	if (philo->table->must_eat_count == 0)
-	{
-		sem_post(philo->sem_philo_full);
-		exit(FEED);
-	}
 	print_status(philo, "has taken a fork");
 	check_sleep(philo->table->time_to_die);
 	print_status(philo, "died");
+	sem_post(philo->table->sem_forks);
+    sem_post(philo->table->sem_waiter);
 	free_table(philo->table);
 	exit(DEAD);
 }

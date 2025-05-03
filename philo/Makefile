@@ -1,9 +1,10 @@
 CC						=	cc
-CFLAGS					=	-Wall -Wextra -Werror -pthread #-fsanitize=address
+CFLAGS					=	-g3 -Wall -Wextra -Werror -pthread -fsanitize=address
 RM						=	rm -f
 
 NAME					=	mandatory
 PHILOSOPHERS			=	philo
+MAKEFILE				=	Makefile
 
 PHILO_SRC_DIR			=	sources/
 
@@ -31,7 +32,7 @@ $(OBJ_DIR)/%.o:			%.c
 						@mkdir -p $(dir $@)
 						$(CC) $(CFLAGS) -c $< -o $@
 
-$(PHILOSOPHERS):		$(PHILO_OBJ) $(PHILO_INC)
+$(PHILOSOPHERS):		$(PHILO_OBJ) $(PHILO_INC) $(MAKEFILE)
 						$(CC) $(CFLAGS) $(PHILO_OBJ) $(LDFLAGS) -o $@
 
 clean:

@@ -36,9 +36,9 @@ void	init_philo(t_table *table, t_philo *philo)
 		return ;
 	sem_unlink(philo->sem_meal_name);
 	if (!init_global_semaphores(philo))
-		child_exit(table, CHILD_EXIT_ERR_SEM);
+		child_exit(table, SEM_ERR);
 	if (!init_local_semaphores(philo))
-		child_exit(table, CHILD_EXIT_ERR_SEM);
+		child_exit(table, SEM_ERR);
 	if (pthread_create(&philo->personal_monitor, NULL, &personal_monitor,
 			table) != 0)
 		child_exit(table, PTHREAD_ERR);

@@ -41,10 +41,12 @@ int	end_program(t_table *table)
 	int	i;
 
 	i = 0;
+	pthread_join(table->satiety, NULL);
+	table->satiety = (pthread_t)NULL;
+	pthread_join(table->starvation, NULL);
+	table->starvation = (pthread_t)NULL;
 	while (i < table->nb_philos)
 		kill(table->pids[i++], SIGKILL);
-	pthread_join(table->satiety, NULL);
-	pthread_join(table->starvation, NULL);
 	sem_post(table->sem_waiter);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 19:15:45 by ganersis          #+#    #+#             */
-/*   Updated: 2025/05/02 21:02:55 by ganersis         ###   ########.fr       */
+/*   Updated: 2025/05/03 19:12:50 by ganersis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,9 @@ int	main(int argc, char **argv)
 		return (1);
 	if (!start_program(table))
 		return (table_cleanup(table, 1));
-	if (!start_monitors_threads(table))
-		return (table_cleanup(table, 1));
-	pthread_join(table->starvation, NULL);
-	pthread_join(table->satiety, NULL);
+	if (table->nb_philos > 1)
+		if (!start_monitors_threads(table))
+			return (table_cleanup(table, 1));
 	end_program(table);
 	return (table_cleanup(table, 0));
 }

@@ -6,7 +6,7 @@
 /*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 19:15:48 by ganersis          #+#    #+#             */
-/*   Updated: 2025/05/02 21:09:54 by ganersis         ###   ########.fr       */
+/*   Updated: 2025/05/03 19:11:52 by ganersis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,13 @@ int	table_cleanup(t_table *table, int exit_code)
 {
 	if (table != NULL)
 	{
-		if (table->satiety)
-			pthread_join(table->satiety, NULL);
-		if (table->starvation)
-			pthread_join(table->starvation, NULL);
+		if (table->nb_philos > 1)
+		{
+			if (table->satiety)
+				pthread_join(table->satiety, NULL);
+			if (table->starvation)
+				pthread_join(table->starvation, NULL);
+		}
 		sem_close(table->sem_forks);
 		sem_close(table->sem_write);
 		sem_close(table->sem_philo_full);

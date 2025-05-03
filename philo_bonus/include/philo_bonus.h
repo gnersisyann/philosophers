@@ -6,7 +6,7 @@
 /*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 19:17:21 by ganersis          #+#    #+#             */
-/*   Updated: 2025/05/02 21:08:15 by ganersis         ###   ########.fr       */
+/*   Updated: 2025/05/03 18:41:03 by ganersis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,6 @@
 # define FEED 42
 # define DEAD 43
 
-# define PTHREAD_ERR 40
-# define CHILD_EXIT_ERR_SEM 41
-# define CHILD_EXIT_PHILO_FULL 42
-# define CHILD_EXIT_PHILO_DEAD 43
-
 # define SEM_NAME_FORKS "/philo_global_forks"
 # define SEM_NAME_WAITER "/philo_global_waiter"
 # define SEM_NAME_WRITE "/philo_global_write"
@@ -72,9 +67,7 @@ typedef struct s_table
 	bool				stop_sim;
 	t_philo				*philos;
 	t_philo				*this_philo;
-
 	sem_t				*sem_waiter;
-
 	pid_t				*pids;
 	pthread_t			satiety;
 	pthread_t			starvation;
