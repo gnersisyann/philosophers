@@ -50,3 +50,25 @@ int	end_program(t_table *table)
 	sem_post(table->sem_waiter);
 	return (0);
 }
+
+// int	end_program(t_table *table)
+// {
+//     int	i;
+//     int	status;
+
+//     i = 0;
+//     while (i < table->nb_philos)
+//     {
+//         waitpid(table->pids[i], &status, 0); // Ожидаем завершения каждого философа
+//         i++;
+//     }
+//     if (table->nb_philos > 1)
+//     {
+//         if (table->satiety)
+//             pthread_join(table->satiety, NULL);
+//         if (table->starvation)
+//             pthread_join(table->starvation, NULL);
+//     }
+//     sem_post(table->sem_waiter);
+//     return (0);
+// }

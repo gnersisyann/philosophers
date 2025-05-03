@@ -2,14 +2,20 @@
 
 static void	one_philo(t_philo *philo)
 {
+	if (!init_local_semaphores(philo))
+		exit(SEM_ERR);
+	sem_wait(philo->sem_meal);
+	philo->last_meal = philo->table->start_time;
+	sem_post(philo->sem_meal);
 	sim_start_delay(philo->table->start_time);
-	print_status(philo, "has taken a fork");
+	print_status(philo, DARK_GREEN "has taken a fork" RESET);
 	check_sleep(philo->table->time_to_die);
-	print_status(philo, "died");
+	print_status(philo, RED "died" RESET);
 	sem_post(philo->table->sem_forks);
-    sem_post(philo->table->sem_waiter);
-	free_table(philo->table);
-	exit(DEAD);
+	sem_post(philo->table->sem_waiter);
+	sem_close(philo->sem_meal);
+	sem_unlink(philo->sem_meal_name);
+	exit(table_cleanup(philo->table, DEAD));
 }
 
 void	philosopher(t_table *table)

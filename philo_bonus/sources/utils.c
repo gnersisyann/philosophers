@@ -1,21 +1,38 @@
 #include "../include/philo_bonus.h"
 
-char	*ft_utoa(unsigned int nb, size_t len)
-{
-	char	*ret;
+// char	*ft_utoa(unsigned int nb, size_t len)
+// {
+// 	char	*ret;
 
-	ret = malloc(sizeof *ret * (len + 1));
-	if (!ret)
-		return (NULL);
-	ret[len] = '\0';
-	len--;
-	while (len > 0)
-	{
-		ret[--len] = (nb % 10) + '0';
-		nb /= 10;
-	}
-	return (ret);
+// 	ret = malloc(sizeof *ret * (len + 1));
+// 	if (!ret)
+// 		return (NULL);
+// 	ret[len] = '\0';
+// 	len--;
+// 	while (len > 0)
+// 	{
+// 		ret[--len] = (nb % 10) + '0';
+// 		nb /= 10;
+// 	}
+// 	return (ret);
+// }
+
+char	*ft_utoa(unsigned int n, size_t digit_count)
+{
+    char	*str;
+
+    str = malloc(sizeof(char) * (digit_count + 1));
+    if (!str)
+        return (NULL);
+    str[digit_count] = '\0';
+    while (digit_count > 0)
+    {
+        str[--digit_count] = (n % 10) + '0';
+        n /= 10;
+    }
+    return (str);
 }
+
 int	ft_strcmp(const char *s1, const char *s2)
 {
 	while (*s1 && (*s1 == *s2))

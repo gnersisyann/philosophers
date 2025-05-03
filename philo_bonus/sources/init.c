@@ -14,31 +14,131 @@ static int	check_bounds(int value, const char *name)
 
 static bool	init_sems(t_table *table)
 {
+	// Удаляем все глобальные семафоры перед созданием
 	unlink_global_sems();
+	// Создаем семафор для вилок
 	table->sem_forks = sem_open(SEM_NAME_FORKS, O_CREAT, S_IRUSR | S_IWUSR,
 			table->nb_philos);
 	if (table->sem_forks == SEM_FAILED)
 		return (sem_error_cleanup(table));
+	// Создаем семафор для записи
 	table->sem_write = sem_open(SEM_NAME_WRITE, O_CREAT, S_IRUSR | S_IWUSR, 1);
 	if (table->sem_write == SEM_FAILED)
+	{
+		sem_close(table->sem_forks);
+		sem_unlink(SEM_NAME_FORKS);
 		return (sem_error_cleanup(table));
+	}
+	// Создаем семафор для отслеживания полного количества философов
 	table->sem_philo_full = sem_open(SEM_NAME_FULL, O_CREAT, S_IRUSR | S_IWUSR,
 			table->nb_philos);
 	if (table->sem_philo_full == SEM_FAILED)
+	{
+		sem_close(table->sem_forks);
+		sem_close(table->sem_write);
+		sem_unlink(SEM_NAME_FORKS);
+		sem_unlink(SEM_NAME_WRITE);
 		return (sem_error_cleanup(table));
+	}
+	// Создаем семафор для отслеживания смерти философов
 	table->sem_philo_dead = sem_open(SEM_NAME_DEAD, O_CREAT, S_IRUSR | S_IWUSR,
 			table->nb_philos);
 	if (table->sem_philo_dead == SEM_FAILED)
+	{
+		sem_close(table->sem_forks);
+		sem_close(table->sem_write);
+		sem_close(table->sem_philo_full);
+		sem_unlink(SEM_NAME_FORKS);
+		sem_unlink(SEM_NAME_WRITE);
+		sem_unlink(SEM_NAME_FULL);
 		return (sem_error_cleanup(table));
+	}
+	// Создаем семафор для остановки симуляции
 	table->sem_stop = sem_open(SEM_NAME_STOP, O_CREAT, S_IRUSR | S_IWUSR, 1);
 	if (table->sem_stop == SEM_FAILED)
+	{
+		sem_close(table->sem_forks);
+		sem_close(table->sem_write);
+		sem_close(table->sem_philo_full);
+		sem_close(table->sem_philo_dead);
+		sem_unlink(SEM_NAME_FORKS);
+		sem_unlink(SEM_NAME_WRITE);
+		sem_unlink(SEM_NAME_FULL);
+		sem_unlink(SEM_NAME_DEAD);
 		return (sem_error_cleanup(table));
+	}
 	table->sem_waiter = sem_open(SEM_NAME_WAITER, O_CREAT, S_IRUSR | S_IWUSR,
 			table->nb_philos > 1 ? table->nb_philos / 2 : 1);
 	if (table->sem_waiter == SEM_FAILED)
+	{
+		sem_close(table->sem_forks);
+		sem_close(table->sem_write);
+		sem_close(table->sem_philo_full);
+		sem_close(table->sem_philo_dead);
+		sem_close(table->sem_stop);
+		sem_unlink(SEM_NAME_FORKS);
+		sem_unlink(SEM_NAME_WRITE);
+		sem_unlink(SEM_NAME_FULL);
+		sem_unlink(SEM_NAME_DEAD);
+		sem_unlink(SEM_NAME_STOP);
 		return (sem_error_cleanup(table));
+	}
 	return (true);
 }
+
+// static bool	init_sems(t_table *table)
+// {
+// 	unlink_global_sems();
+// 	table->sem_forks = sem_open(SEM_NAME_FORKS, O_CREAT, S_IRUSR | S_IWUSR,
+// 			table->nb_philos);
+// 	if (table->sem_forks == SEM_FAILED)
+// 		return (sem_error_cleanup(table));
+// 	table->sem_write = sem_open(SEM_NAME_WRITE, O_CREAT, S_IRUSR | S_IWUSR, 1);
+// 	if (table->sem_write == SEM_FAILED)
+// 		return (sem_error_cleanup(table));
+// 	table->sem_philo_full = sem_open(SEM_NAME_FULL, O_CREAT, S_IRUSR | S_IWUSR,
+// 			table->nb_philos);
+// 	if (table->sem_philo_full == SEM_FAILED)
+// 		return (sem_error_cleanup(table));
+// 	table->sem_philo_dead = sem_open(SEM_NAME_DEAD, O_CREAT, S_IRUSR | S_IWUSR,
+// 			table->nb_philos);
+// 	if (table->sem_philo_dead == SEM_FAILED)
+// 		return (sem_error_cleanup(table));
+// 	table->sem_stop = sem_open(SEM_NAME_STOP, O_CREAT, S_IRUSR | S_IWUSR, 1);
+// 	if (table->sem_stop == SEM_FAILED)
+// 		return (sem_error_cleanup(table));
+// 	table->sem_waiter = sem_open(SEM_NAME_WAITER, O_CREAT, S_IRUSR | S_IWUSR,
+// 			table->nb_philos > 1 ? table->nb_philos / 2 : 1);
+// 	if (table->sem_waiter == SEM_FAILED)
+// 		return (sem_error_cleanup(table));
+// 	return (true);
+// }
+
+// static char	*set_local_sem_name(const char *str, unsigned int id)
+// {
+// 	unsigned int	i;
+// 	unsigned int	digit_count;
+// 	char			*sem_name;
+// 	char			*tmp;
+
+// 	digit_count = 0;
+// 	i = id;
+// 	while (i)
+// 	{
+// 		digit_count++;
+// 		i /= 10;
+// 	}
+// 	i = ft_strlen(str) + digit_count;
+// 	sem_name = malloc(sizeof *sem_name * (i + 1));
+// 	if (sem_name == NULL)
+// 		return (NULL);
+// 	sem_name[0] = '\0';
+// 	sem_name = ft_strcat(sem_name, str);
+// 	tmp = ft_utoa(id, digit_count);
+// 	sem_name = ft_strcat(sem_name, tmp);
+// 	free(tmp);
+// 	return (sem_name);
+// }
 
 static char	*set_local_sem_name(const char *str, unsigned int id)
 {
@@ -55,12 +155,17 @@ static char	*set_local_sem_name(const char *str, unsigned int id)
 		i /= 10;
 	}
 	i = ft_strlen(str) + digit_count;
-	sem_name = malloc(sizeof *sem_name * (i + 1));
-	if (sem_name == NULL)
+	sem_name = malloc(sizeof(char) * (i + 1));
+	if (!sem_name)
 		return (NULL);
 	sem_name[0] = '\0';
 	sem_name = ft_strcat(sem_name, str);
 	tmp = ft_utoa(id, digit_count);
+	if (!tmp)
+	{
+		free(sem_name);
+		return (NULL);
+	}
 	sem_name = ft_strcat(sem_name, tmp);
 	free(tmp);
 	return (sem_name);
@@ -92,7 +197,9 @@ static t_philo	*init_philosophers(t_table *table)
 					table));
 		philos[i].times_ate = 0;
 		philos[i].nb_forks_held = 0;
+		philos[i].last_meal = 0;
 		philos[i].ate_enough = false;
+		philos[i].personal_monitor = (pthread_t)NULL;
 		i++;
 	}
 	return (philos);

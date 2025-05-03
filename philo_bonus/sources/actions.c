@@ -17,7 +17,9 @@ void	check_sleep(time_t sleep_time)
 
 	wake_up = get_time_in_ms() + sleep_time;
 	while (get_time_in_ms() < wake_up)
+	{
 		usleep(100);
+	}
 }
 
 void	think(t_philo *philo, bool silent)
