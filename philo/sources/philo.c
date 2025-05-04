@@ -6,7 +6,7 @@
 /*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 19:15:35 by ganersis          #+#    #+#             */
-/*   Updated: 2025/04/29 20:55:09 by ganersis         ###   ########.fr       */
+/*   Updated: 2025/05/04 14:00:14 by ganersis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	*philo_routine(void *args)
 		eat_and_sleep(philo);
 		if (has_simulation_stopped(philo->table))
 			break ;
-		think(philo, true);
+		think(philo, false);
 	}
 	return (NULL);
 }
