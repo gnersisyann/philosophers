@@ -18,6 +18,8 @@ void	*satiety_routine(void *args)
 	t_table	*table;
 
 	table = (t_table *)args;
+	if (table->nb_philos == 1)
+		return (NULL);
 	sim_start_delay(table->start_time);
 	while (table->philo_full_count < table->nb_philos)
 	{

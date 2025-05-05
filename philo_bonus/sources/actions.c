@@ -41,20 +41,23 @@ void	think(t_philo *philo, bool silent)
 
 void	print_status(t_philo *philo, char *str)
 {
-	static bool	death_printed = false;
+    sem_wait(philo->table->sem_write);
 
-	sem_wait(philo->table->sem_stop);
-	sem_wait(philo->table->sem_write);
-	if (philo->table->stop_sim == false || (ft_strcmp(str,
-				RED "died" RESET) == 0 && !death_printed))
-	{
-		printf("%ld %d %s\n", get_time_in_ms() - philo->table->start_time,
-			philo->id + 1, str);
-		if (ft_strcmp(str, RED "died" RESET) == 0)
-			death_printed = true;
-	}
-	sem_post(philo->table->sem_write);
-	sem_post(philo->table->sem_stop);
+    if (ft_strcmp(str, RED "died" RESET) == 0)
+    {
+        if (sem_wait(philo->table->sem_died) == 0)
+        {
+            printf("%ld %d %s\n", get_time_in_ms() - philo->table->start_time,
+                philo->id + 1, str);
+        }
+    }
+    else if (!philo->table->stop_sim)
+    {
+        printf("%ld %d %s\n", get_time_in_ms() - philo->table->start_time,
+            philo->id + 1, str);
+    }
+
+    sem_post(philo->table->sem_write);
 }
 
 int	eat_and_sleep(t_philo *philo)

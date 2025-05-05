@@ -83,62 +83,10 @@ static bool	init_sems(t_table *table)
 		sem_unlink(SEM_NAME_STOP);
 		return (sem_error_cleanup(table));
 	}
+	sem_unlink("/sem_died");
+	table->sem_died = sem_open("/sem_died", O_CREAT, 0644, 1);
 	return (true);
 }
-
-// static bool	init_sems(t_table *table)
-// {
-// 	unlink_global_sems();
-// 	table->sem_forks = sem_open(SEM_NAME_FORKS, O_CREAT, S_IRUSR | S_IWUSR,
-// 			table->nb_philos);
-// 	if (table->sem_forks == SEM_FAILED)
-// 		return (sem_error_cleanup(table));
-// 	table->sem_write = sem_open(SEM_NAME_WRITE, O_CREAT, S_IRUSR | S_IWUSR, 1);
-// 	if (table->sem_write == SEM_FAILED)
-// 		return (sem_error_cleanup(table));
-// 	table->sem_philo_full = sem_open(SEM_NAME_FULL, O_CREAT, S_IRUSR | S_IWUSR,
-// 			table->nb_philos);
-// 	if (table->sem_philo_full == SEM_FAILED)
-// 		return (sem_error_cleanup(table));
-// 	table->sem_philo_dead = sem_open(SEM_NAME_DEAD, O_CREAT, S_IRUSR | S_IWUSR,
-// 			table->nb_philos);
-// 	if (table->sem_philo_dead == SEM_FAILED)
-// 		return (sem_error_cleanup(table));
-// 	table->sem_stop = sem_open(SEM_NAME_STOP, O_CREAT, S_IRUSR | S_IWUSR, 1);
-// 	if (table->sem_stop == SEM_FAILED)
-// 		return (sem_error_cleanup(table));
-// 	table->sem_waiter = sem_open(SEM_NAME_WAITER, O_CREAT, S_IRUSR | S_IWUSR,
-// 			table->nb_philos > 1 ? table->nb_philos / 2 : 1);
-// 	if (table->sem_waiter == SEM_FAILED)
-// 		return (sem_error_cleanup(table));
-// 	return (true);
-// }
-
-// static char	*set_local_sem_name(const char *str, unsigned int id)
-// {
-// 	unsigned int	i;
-// 	unsigned int	digit_count;
-// 	char			*sem_name;
-// 	char			*tmp;
-
-// 	digit_count = 0;
-// 	i = id;
-// 	while (i)
-// 	{
-// 		digit_count++;
-// 		i /= 10;
-// 	}
-// 	i = ft_strlen(str) + digit_count;
-// 	sem_name = malloc(sizeof *sem_name * (i + 1));
-// 	if (sem_name == NULL)
-// 		return (NULL);
-// 	sem_name[0] = '\0';
-// 	sem_name = ft_strcat(sem_name, str);
-// 	tmp = ft_utoa(id, digit_count);
-// 	sem_name = ft_strcat(sem_name, tmp);
-// 	free(tmp);
-// 	return (sem_name);
-// }
 
 static char	*set_local_sem_name(const char *str, unsigned int id)
 {

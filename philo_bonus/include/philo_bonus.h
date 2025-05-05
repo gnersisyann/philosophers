@@ -6,7 +6,7 @@
 /*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 19:17:21 by ganersis          #+#    #+#             */
-/*   Updated: 2025/05/03 22:08:49 by ganersis         ###   ########.fr       */
+/*   Updated: 2025/05/05 16:35:28 by ganersis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ typedef struct s_table
 	pid_t				*pids;
 	pthread_t			satiety;
 	pthread_t			starvation;
+
+	sem_t *sem_died;
 }						t_table;
 
 typedef struct s_philo

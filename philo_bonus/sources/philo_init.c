@@ -17,6 +17,8 @@ static bool	init_global_semaphores(t_philo *philo)
 			philo->table->nb_philos);
 	if (philo->sem_philo_dead == SEM_FAILED)
 		return (false);
+	if (philo->sem_forks == SEM_FAILED)
+		return (false);
 	return (true);
 }
 
