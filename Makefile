@@ -6,22 +6,18 @@ NAME					=	bonus
 PHILOSOPHERS			=	philo_bonus
 MAKEFILE				=	Makefile
 
-PHILO_SRC_DIR			=	sources/
+PHILO_SRC_DIR			=	src/
 
 PHILO_INC				=	include/philo_bonus.h
 
 PHILO_SRC				=	$(PHILO_SRC_DIR)main.c \
-							$(PHILO_SRC_DIR)main_utils.c \
-							$(PHILO_SRC_DIR)actions.c \
-							$(PHILO_SRC_DIR)error.c \
-							$(PHILO_SRC_DIR)init.c \
-							$(PHILO_SRC_DIR)monitoring.c \
-							$(PHILO_SRC_DIR)monitoring_utils.c \
-							$(PHILO_SRC_DIR)philo.c \
-							$(PHILO_SRC_DIR)philo_init.c \
-							$(PHILO_SRC_DIR)start_end.c \
-							$(PHILO_SRC_DIR)time.c \
-							$(PHILO_SRC_DIR)utils.c 
+							$(PHILO_SRC_DIR)utils.c \
+							$(PHILO_SRC_DIR)args.c \
+							$(PHILO_SRC_DIR)monitor.c \
+							$(PHILO_SRC_DIR)parent_monitor.c \
+							$(PHILO_SRC_DIR)philosopher.c \
+							$(PHILO_SRC_DIR)routine.c \
+							$(PHILO_SRC_DIR)semaphores.c
 
 OBJ_DIR					=	obj
 PHILO_OBJ				=	$(PHILO_SRC:%.c=$(OBJ_DIR)/%.o)
