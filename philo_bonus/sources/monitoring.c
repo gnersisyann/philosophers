@@ -25,15 +25,27 @@ void	*satiety_routine(void *args)
 			return (NULL);
 		sem_wait(table->sem_philo_full);
 		if (has_simulation_stopped(table) == false)
+		{
 			table->philo_full_count += 1;
+			if (table->philo_full_count == table->nb_philos)
+			{
+				
+				sem_wait(table->sem_stop); //
+				table->stop_sim = true; //
+				sem_post(table->sem_stop); //
+				printf("%ld\n",get_time_in_ms() - table->start_time);
+				kill_all_philos(table, EXIT_SUCCESS); //
+				sem_post(table->sem_philo_dead); //
+				return (NULL); //
+			}
+		}
 		else
-			return (NULL);
+		{
+			sem_post(table->sem_philo_full); //
+			return (NULL); //
+		}
+		usleep(100);
 	}
-	sem_wait(table->sem_stop);
-	table->stop_sim = true;
-	kill_all_philos(table, EXIT_SUCCESS);
-	sem_post(table->sem_philo_dead);
-	sem_post(table->sem_stop);
 	return (NULL);
 }
 

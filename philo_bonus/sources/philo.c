@@ -32,8 +32,10 @@ void	philosopher(t_table *table)
 	sim_start_delay(philo->table->start_time);
 	if (philo->id % 2 == 0)
 		usleep(100);
-	while (1)
+	while (!has_simulation_stopped(table))
 	{
+		if (has_simulation_stopped(philo->table))
+			child_exit(table, EXIT_SUCCESS);
 		eat_and_sleep(philo);
 		think(philo, false);
 	}

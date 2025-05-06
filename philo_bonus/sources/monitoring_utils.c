@@ -10,12 +10,13 @@ bool	end_condition_reached(t_table *table, t_philo *philo)
 	}                                  //
 	if (get_time_in_ms() - philo->last_meal >= table->time_to_die)
 	{
-		sem_wait(table->sem_stop);     //
-		if (!table->stop_sim)          //
-		{                              //
+		sem_wait(table->sem_stop); //
+		if (!table->stop_sim)      //
+		{
 			table->stop_sim = true;    //
 			sem_post(table->sem_stop); //
-			print_status(philo, RED "died" RESET);
+			printf("%ld %d %s\n", get_time_in_ms() - philo->table->start_time,
+				philo->id + 1, RED "died" RESET);
 			sem_post(philo->table->sem_philo_dead);
 		}                              //
 		else                           //
