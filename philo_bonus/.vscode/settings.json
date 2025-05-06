@@ -1,9 +1,0 @@
-{
-    "editor.defaultFormatter": "keyhr.42-c-format",
-    "42header.username": "ganersis",
-    "42header.email": "marvin@42.fr",
-    "files.associations": {
-		"string.h": "c",
-		"philo.h": "c"
-	}
-}
