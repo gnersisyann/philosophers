@@ -13,6 +13,7 @@ void	*monitor_all_deaths(void *arg)
 		kill(philosophers[i].pid, SIGKILL);
 	return (NULL);
 }
+
 void	*monitor_all_meals(void *arg)
 {
 	t_philo	*philosophers;

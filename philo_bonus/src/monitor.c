@@ -17,7 +17,7 @@ void	*monitor_death(void *arg)
 			exit(0);
 		}
 		sem_post(philo->local_last_meal);
-		usleep(1000);  // Увеличиваем задержку до 1 мс
+		usleep(1000);
 	}
 	return (NULL);
 }
@@ -34,7 +34,6 @@ void	*monitor_meals(void *arg)
 		sem_wait(philo->local_meals_eaten);
 		meals = philo->meals_eaten;
 		sem_post(philo->local_meals_eaten);
-		
 		if (meals >= philo->args->must_eat)
 		{
 			sem_post(philo->sems->forks);
@@ -43,7 +42,7 @@ void	*monitor_meals(void *arg)
 			cleanup_local_semaphores(philo);
 			exit(0);
 		}
-		usleep(1000);  // Увеличиваем задержку до 1 мс, как и в monitor_death
+		usleep(1000);
 	}
 	return (NULL);
 }
