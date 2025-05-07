@@ -22,14 +22,25 @@ void	precise_usleep(long time_in_ms)
 {
 	long	start;
 	long	elapsed;
+	long	remain;
 
 	start = get_time();
+	// Спать большими кусками, пока не останется ~2мс
 	while ((elapsed = get_time() - start) < time_in_ms)
 	{
-		if (time_in_ms - elapsed > 1)
-			usleep((time_in_ms - elapsed) * 900);
+		remain = time_in_ms - elapsed;
+		if (remain > 2)
+		{
+			// Спим только 80% оставшегося времени для компенсации неточности usleep
+			usleep((remain > 10 ? remain - 2 : remain * 800) / 1000);
+		}
 		else
-			break ;
+		{
+			// Активное ожидание для последних 2мс для повышения точности
+			while (get_time() - start < time_in_ms)
+				;
+			break;
+		}
 	}
 }
 
@@ -38,7 +49,7 @@ long	get_time(void)
 	struct timeval	tv;
 
 	gettimeofday(&tv, NULL);
-	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
+	return ((tv.tv_sec * (long)1000) + (tv.tv_usec / 1000));
 }
 
 int	ft_atoi(const char *str)

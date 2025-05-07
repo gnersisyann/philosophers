@@ -74,17 +74,27 @@ void	philosopher_routine(t_philo *philo)
 		print_action(philo, CYAN "has taken a fork" RESET);
 		sem_wait(philo->sems->forks);
 		print_action(philo, CYAN "has taken a fork" RESET);
+		
+		// Обновляем время приема пищи до вывода сообщения, чтобы минимизировать задержку
 		sem_wait(philo->local_last_meal);
 		philo->last_meal = get_time();
 		sem_post(philo->local_last_meal);
+		
+		// Обновляем счетчик приемов пищи
 		sem_wait(philo->local_meals_eaten);
 		philo->meals_eaten++;
 		sem_post(philo->local_meals_eaten);
+		
 		print_action(philo, GREEN "is eating" RESET);
 		precise_usleep(philo->args->t_eat);
-		sem_post(philo->sems->forks);
-		sem_post(philo->sems->forks);
+		
+		// Готовим сообщение о сне до освобождения вилок для минимизации задержки
 		print_action(philo, GRAY "is sleeping" RESET);
+		
+		// Освобождаем вилки только после печати сообщения
+		sem_post(philo->sems->forks);
+		sem_post(philo->sems->forks);
+		
 		precise_usleep(philo->args->t_sleep);
 		print_action(philo, DARK_BLUE "is thinking" RESET);
 	}
