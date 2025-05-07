@@ -56,6 +56,7 @@ typedef struct s_philo {
     t_args         *args;
     t_semaphores   *sems;
 	sem_t *local_last_meal;
+	sem_t *local_meals_eaten;
 } t_philo;
 
 // === utils.c ===
@@ -90,5 +91,6 @@ void    *monitor_all_meals(void *arg); // +
 
 // === cleanup.c ===
 void    terminate_all(t_philo *philos, int n);
+void	cleanup_local_semaphores(t_philo *philo);
 
 #endif

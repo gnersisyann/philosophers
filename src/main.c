@@ -9,7 +9,7 @@ int	main(int argc, char **argv)
 		return (1);
 	if (init_semaphores(&sems, args.n_philo) != 0)
 		return (2);
-	args.start_time = get_time() + args.n_philo * 20;
+	args.start_time = get_time() + 200;  // Увеличиваем задержку до 200 мс для лучшей синхронизации
 	run_philosophers(&args, &sems);
 	close_semaphores(&sems);
 	return (0);

@@ -14,7 +14,8 @@ void	run_philosophers(t_args *args, t_semaphores *sems)
 	while (++i < args->n_philo)
 	{
 		philosophers[i].id = i + 1;
-		philosophers[i].last_meal = get_time();
+		// Устанавливаем last_meal как время старта, а не текущее время
+		philosophers[i].last_meal = args->start_time;
 		philosophers[i].meals_eaten = 0;
 		philosophers[i].args = args;
 		philosophers[i].sems = sems;

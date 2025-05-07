@@ -14,16 +14,23 @@ void	print_action(t_philo *philo, const char *action)
 	sem_wait(philo->sems->print);
 	timestamp = get_time() - philo->args->start_time;
 	printf("%ld %d %s\n", timestamp, philo->id, action);
-	sem_post(philo->sems->print);
+	if (strcmp(action, RED "died" RESET) != 0)
+		sem_post(philo->sems->print);
 }
 
 void	precise_usleep(long time_in_ms)
 {
 	long	start;
+	long	elapsed;
 
 	start = get_time();
-	while (get_time() - start < time_in_ms)
-		usleep(100);
+	while ((elapsed = get_time() - start) < time_in_ms)
+	{
+		if (time_in_ms - elapsed > 1)
+			usleep((time_in_ms - elapsed) * 900);
+		else
+			break ;
+	}
 }
 
 long	get_time(void)
