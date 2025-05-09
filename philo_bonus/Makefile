@@ -1,5 +1,5 @@
-CC						=	cc
-CFLAGS					=	-Wall -Wextra -Werror -pthread # -g3 -fsanitize=address
+CC						=	clang
+CFLAGS					=	-Wall -Wextra -Werror -pthread -g3 #-fsanitize=address
 RM						=	rm -f
 
 NAME					=	bonus

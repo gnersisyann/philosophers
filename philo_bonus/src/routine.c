@@ -12,7 +12,7 @@ static int	is_close_to_death(t_philo *philo)
 	return (time_since_meal > (philo->args->t_die * 0.75));
 }
 
-static void	init_local_semaphore(t_philo *philo)
+static void	init_local_semaphores(t_philo *philo)
 {
 	char	name[32];
 
@@ -75,7 +75,7 @@ void	philosopher_routine(t_philo *philo)
 	pthread_t	death_monitor_thread;
 	pthread_t	meal_monitor_thread;
 
-	init_local_semaphore(philo);
+	init_local_semaphores(philo);
 	pthread_create(&death_monitor_thread, NULL, monitor_death, philo);
 	pthread_detach(death_monitor_thread);
 	if (philo->args->must_eat != -1)

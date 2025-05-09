@@ -3,8 +3,9 @@
 
 void	sim_start_delay(time_t start_time)
 {
-	while (get_time() < start_time)
-		continue ;
+	while (get_time() < start_time){
+		usleep(100) ;
+	}
 }
 
 void	print_action(t_philo *philo, const char *action)

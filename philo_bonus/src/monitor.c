@@ -13,7 +13,6 @@ void	*monitor_death(void *arg)
 		{
 			print_action(philo, RED "died" RESET);
 			sem_post(philo->sems->dead_signal);
-			cleanup_local_semaphores(philo);
 			exit(0);
 		}
 		sem_post(philo->local_last_meal);
@@ -39,7 +38,6 @@ void	*monitor_meals(void *arg)
 			sem_post(philo->sems->forks);
 			sem_post(philo->sems->forks);
 			sem_post(philo->sems->meal_check);
-			cleanup_local_semaphores(philo);
 			exit(0);
 		}
 		usleep(1000);

@@ -33,6 +33,7 @@ void	run_philosophers(t_args *args, t_semaphores *sems)
 	philosophers = malloc(sizeof(t_philo) * args->n_philo);
 	if (!philosophers)
 		return ;
+	memset(philosophers, 0, sizeof(t_philo) * args->n_philo);
 	run_helper(args, sems, philosophers);
 	pthread_create(&all_death_monitor_thread, NULL, monitor_all_deaths,
 		philosophers);
@@ -43,6 +44,9 @@ void	run_philosophers(t_args *args, t_semaphores *sems)
 			philosophers);
 		pthread_detach(all_meal_monitor_thread);
 	}
+	i = -1;
+	while (++i < args->n_philo)
+		cleanup_local_semaphores(&philosophers[i]);
 	i = -1;
 	while (++i < args->n_philo)
 		waitpid(philosophers[i].pid, NULL, 0);
