@@ -1,28 +1,17 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   philo_bonus.h                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/29 19:17:21 by ganersis          #+#    #+#             */
-/*   Updated: 2025/05/05 16:35:28 by ganersis         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef PHILO_BONUS_H
 # define PHILO_BONUS_H
 
+# include <errno.h>
 # include <fcntl.h>
 # include <limits.h>
 # include <pthread.h>
 # include <semaphore.h>
 # include <signal.h>
-# include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <sys/stat.h>
+# include <string.h>
 # include <sys/time.h>
+# include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
 
@@ -36,95 +25,75 @@
 # define CYAN "\033[0;36m"
 # define BLUE "\033[0;34m"
 
-# define PTHREAD_ERR 40
-# define SEM_ERR 41
-# define FEED 42
-# define DEAD 43
+# define SEM_FORKS_NAME "/sem_forks"
+# define SEM_PRINT_NAME "/sem_print"
+# define SEM_MEAL_NAME "/sem_meal"
+# define SEM_DEAD_NAME "/sem_dead"
+# define SEM_PAUSE_NAME "/sem_"
 
-# define SEM_NAME_FORKS "/philo_global_forks"
-# define SEM_NAME_WAITER "/philo_global_waiter"
-# define SEM_NAME_WRITE "/philo_global_write"
-# define SEM_NAME_FULL "/philo_global_full"
-# define SEM_NAME_DEAD "/philo_global_dead"
-# define SEM_NAME_STOP "/philo_global_stop"
-# define SEM_NAME_MEAL "/philo_local_meal_"
-
-typedef struct s_philo	t_philo;
-
-typedef struct s_table
+typedef struct s_args
 {
-	time_t				start_time;
-	int					nb_philos;
-	time_t				time_to_die;
-	time_t				time_to_eat;
-	time_t				time_to_sleep;
-	int					must_eat_count;
-	sem_t				*sem_forks;
-	sem_t				*sem_write;
-	sem_t				*sem_philo_full;
-	int					philo_full_count;
-	sem_t				*sem_philo_dead;
-	sem_t				*sem_stop;
-	bool				stop_sim;
-	t_philo				*philos;
-	t_philo				*this_philo;
-	sem_t				*sem_waiter;
-	pid_t				*pids;
-	pthread_t			satiety;
-	pthread_t			starvation;
+	int				n_philo;
+	long			t_die;
+	long			t_eat;
+	long			t_sleep;
+	int				must_eat;
+	long			start_time;
+}					t_args;
 
-	sem_t *sem_died;
-}						t_table;
+typedef struct s_semaphores
+{
+	sem_t			*forks;
+	sem_t			*print;
+	sem_t			*meal_check;
+	sem_t			*dead_signal;
+}					t_semaphores;
 
 typedef struct s_philo
 {
-	pthread_t			personal_monitor;
-	sem_t				*sem_forks;
-	sem_t				*sem_write;
-	sem_t				*sem_philo_full;
-	sem_t				*sem_philo_dead;
-	sem_t				*sem_meal;
-	char				*sem_meal_name;
-	int					nb_forks_held;
-	unsigned int		id;
-	unsigned int		times_ate;
-	bool				ate_enough;
-	time_t				last_meal;
-	t_table				*table;
-}						t_philo;
+	int				id;
+	pid_t			pid;
+	long			last_meal;
+	int				meals_eaten;
+	pthread_t		death_monitor;
+	pthread_t		eat_monitor;
+	t_args			*args;
+	t_semaphores	*sems;
+	sem_t			*local_last_meal;
+	sem_t			*local_meals_eaten;
+}					t_philo;
 
-int						ft_atoi(const char *str);
-int						arg_check(int argc);
-t_table					*parse_args(char **argv);
-int						error_failure(char *str, char *details, t_table *table);
-void					*error_null(char *str, char *details, t_table *table);
-time_t					get_time_in_ms(void);
-bool					start_program(t_table *table);
-void					destroy_mutexes(t_table *table);
-void					*free_table(t_table *table);
-int						end_program(t_table *table);
-void					sim_start_delay(time_t start_time);
-void					print_status(t_philo *philo, char *str);
-void					check_sleep(time_t sleep_time);
-void					think(t_philo *philo, bool silent);
-int						eat_and_sleep(t_philo *philo);
-bool					has_simulation_stopped(t_table *table);
-int						ft_strcmp(const char *s1, const char *s2);
-int						sem_error_cleanup(t_table *table);
-void					unlink_global_sems(void);
-size_t					ft_strlen(const char *str);
-char					*ft_strcat(char *dst, const char *src);
-char					*ft_utoa(unsigned int nb, size_t len);
-int						ft_strcmp(const char *s1, const char *s2);
-int						table_cleanup(t_table *table, int exit_code);
-void					*satiety_routine(void *args);
-void					*starvation_routine(void *args);
-void					philosopher(t_table *table);
-void					*personal_monitor(void *args);
-void					init_philo(t_table *table, t_philo *philo);
-bool					end_condition_reached(t_table *table, t_philo *philo);
-void					child_exit(t_table *table, int exit_code);
-bool					start_monitors_threads(t_table *table);
-bool					init_local_semaphores(t_philo *philo);
-int						kill_all_philos(t_table *table, int exit_code);
+// === utils.c ===
+long				get_time(void);
+void				precise_usleep(long time);
+void				print_action(t_philo *philo, const char *action);
+int					ft_atoi(const char *str);
+void				sim_start_delay(time_t start_time);
+long				calculate_think_time(t_philo *philo);
+
+// === args.c ===
+int					parse_args(int argc, char **argv, t_args *args);
+
+// === semaphores.c ===
+int					init_semaphores(t_semaphores *sems, int n_philo);
+void				close_semaphores(t_semaphores *sems);
+void				unlink_semaphores(void);
+
+// === philosopher.c ===
+void				run_philosophers(t_args *args, t_semaphores *sems);
+
+// === routine.c ===
+void				philosopher_routine(t_philo *philo);
+
+// === monitor.c ===
+void				*monitor_death(void *arg);
+void				*monitor_meals(void *arg);
+
+// === parent_monitor.c ===
+void				*monitor_all_deaths(void *arg);
+void				*monitor_all_meals(void *arg);
+
+// === cleanup.c ===
+void				cleanup_local_semaphores(t_philo *philo);
+
 #endif
