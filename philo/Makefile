@@ -1,5 +1,5 @@
-CC						=	clang
-CFLAGS					=	-g3 -Wall -Wextra -Werror -pthread -fsanitize=address
+CC						=	cc
+CFLAGS					=	-Wall -Wextra -Werror -pthread
 RM						=	rm -f
 
 NAME					=	mandatory
