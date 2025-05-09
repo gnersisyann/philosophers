@@ -13,6 +13,7 @@ static void	run_helper(t_args *args, t_semaphores *sems, t_philo *philosophers)
 		philosophers[i].meals_eaten = 0;
 		philosophers[i].args = args;
 		philosophers[i].sems = sems;
+		philosophers[i].finish = false;
 		pid = fork();
 		if (pid == 0)
 		{
@@ -45,12 +46,12 @@ void	run_philosophers(t_args *args, t_semaphores *sems)
 	i = -1;
 	while (++i < args->n_philo)
 		waitpid(philosophers[i].pid, NULL, 0);
-	i = -1;
-	while (++i < args->n_philo)
-		cleanup_local_semaphores(&philosophers[i]);
 	pthread_join(all_death_monitor_thread, NULL);
 	if (args->must_eat != -1)
 		pthread_join(all_meal_monitor_thread, NULL);
+	i = -1;
+	while (++i < args->n_philo)
+		cleanup_local_semaphores(&philosophers[i]);
 	free(philosophers);
 	close_semaphores(sems);
 }

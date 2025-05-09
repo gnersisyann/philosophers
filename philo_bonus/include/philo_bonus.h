@@ -7,6 +7,7 @@
 # include <pthread.h>
 # include <semaphore.h>
 # include <signal.h>
+# include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
@@ -61,6 +62,8 @@ typedef struct s_philo
 	t_semaphores	*sems;
 	sem_t			*local_last_meal;
 	sem_t			*local_meals_eaten;
+	sem_t			*local_finish;
+	bool			finish;
 }					t_philo;
 
 // === utils.c ===
