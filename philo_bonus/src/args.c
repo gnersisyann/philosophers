@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   args.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/09 17:33:48 by ganersis          #+#    #+#             */
+/*   Updated: 2025/05/09 17:33:48 by ganersis         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/philo_bonus.h"
 
 static int	is_numeric(const char *str)
@@ -78,8 +90,8 @@ int	parse_args(int argc, char **argv, t_args *args)
 	if (argv[5])
 	{
 		if (ft_atoi(argv[5]) <= 0)
-			return (print_error("Number of times each philosopher \
-		must eat must be positive"), 1);
+			return (print_error("Number of times each philosopher"\
+" must eat must be positive"), 1);
 		args->must_eat = ft_atoi(argv[5]);
 	}
 	if (check_bounds(args))

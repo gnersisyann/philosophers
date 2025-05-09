@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo_bonus.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/09 17:33:51 by ganersis          #+#    #+#             */
+/*   Updated: 2025/05/09 17:34:59 by ganersis         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILO_BONUS_H
 # define PHILO_BONUS_H
 
@@ -30,7 +42,9 @@
 # define SEM_PRINT_NAME "/sem_print"
 # define SEM_MEAL_NAME "/sem_meal"
 # define SEM_DEAD_NAME "/sem_dead"
-# define SEM_PAUSE_NAME "/sem_"
+# define SEM_LLASTMEAL_NAME "/sem_local_last_meal_"
+# define SEM_LMEALSEATEN_NAME "/sem_local_meals_eaten_"
+# define SEM_LFINISH_NAME "/sem_local_finish_"
 
 typedef struct s_args
 {
@@ -76,6 +90,7 @@ long				calculate_think_time(t_philo *philo);
 // === other.c ===
 int					ft_strcmp(const char *s1, const char *s2);
 int					ft_atoi(const char *str);
+char				*strjoin_int(const char *prefix, int number);
 
 // === args.c ===
 int					parse_args(int argc, char **argv, t_args *args);
@@ -102,6 +117,5 @@ void				*monitor_all_meals(void *arg);
 // === local_semaphores.c ===
 void				init_local_semaphores(t_philo *philo);
 void				cleanup_local_semaphores(t_philo *philo);
-
 
 #endif

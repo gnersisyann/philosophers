@@ -1,21 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/09 17:33:45 by ganersis          #+#    #+#             */
+/*   Updated: 2025/05/09 17:33:46 by ganersis         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/philo_bonus.h"
 
-static void	print_usage(void)
+void	print_usage(void)
 {
-	printf("Usage: ./philo_bonus number_of_philosophers time_to_die \
-		time_to_eat time_to_sleep \
-		[number_of_times_each_philosopher_must_eat]\n");
-	printf("\nParameters:\n");
-	printf("  number_of_philosophers: Number of philosophers at the \
-		table\n");
-	printf("  time_to_die: Time in milliseconds after which a philosopher \
-		dies if they haven't eaten\n");
-	printf("  time_to_eat: Time in milliseconds it takes for a philosopher \
-		to eat\n");
-	printf("  time_to_sleep: Time in milliseconds a philosopher spends \
-		sleeping\n");
-	printf("  number_of_times_each_philosopher_must_eat: [Optional] \
-		Program stops when all philosophers have eaten this many times\n");
+	printf(RED "Error:" RESET " Invalid number of arguments.\n\n");
+	printf("Usage: " GREEN "./philo_bonus" RESET " N T_DIE"\
+" T_EAT T_SLEEP [EAT_COUNT]\n\n");
+	printf("Arguments:\n");
+	printf("  N         - number of philosophers (and forks)\n");
+	printf("  T_DIE     - time to die (ms)\n");
+	printf("  T_EAT     - time to eat (ms)\n");
+	printf("  T_SLEEP   - time to sleep (ms)\n");
+	printf("  EAT_COUNT - (optional) times each philosopher must eat\n\n");
+	printf("Example:\n");
+	printf("  " GREEN "./philo_bonus 5 800 200 200" RESET "\n");
+	printf("  " GREEN "./philo_bonus 5 800 200 200 7" RESET "\n\n");
 }
 
 int	main(int argc, char **argv)
