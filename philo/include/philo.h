@@ -6,7 +6,7 @@
 /*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 19:17:21 by ganersis          #+#    #+#             */
-/*   Updated: 2025/04/29 19:19:29 by ganersis         ###   ########.fr       */
+/*   Updated: 2025/05/09 19:20:23 by ganersis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef struct s_philo
 }						t_philo;
 
 int						ft_atoi(const char *str);
-int						arg_check(int argc);
+int						arg_check(int argc, char **argv);
 t_table					*parse_args(char **argv);
 int						error_failure(char *str, char *details, t_table *table);
 void					*error_null(char *str, char *details, t_table *table);

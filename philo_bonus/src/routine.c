@@ -6,7 +6,7 @@
 /*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 17:34:31 by ganersis          #+#    #+#             */
-/*   Updated: 2025/05/09 17:34:31 by ganersis         ###   ########.fr       */
+/*   Updated: 2025/05/09 19:45:37 by ganersis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,6 @@ void	philosopher_routine(t_philo *philo)
 		take_forks(philo);
 		routine_logic(philo);
 	}
+	usleep(1000);
 	cleanup_local_semaphores(philo);
 }

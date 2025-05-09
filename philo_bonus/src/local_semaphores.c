@@ -6,7 +6,7 @@
 /*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 17:33:53 by ganersis          #+#    #+#             */
-/*   Updated: 2025/05/09 17:34:12 by ganersis         ###   ########.fr       */
+/*   Updated: 2025/05/09 19:27:31 by ganersis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,15 @@ void	cleanup_local_semaphores(t_philo *philo)
 	if (!name)
 		error_exit();
 	sem_unlink(name);
+	free(name);
 	name = strjoin_int(SEM_LMEALSEATEN_NAME, philo->id);
 	if (!name)
 		error_exit();
 	sem_unlink(name);
+	free(name);
 	name = strjoin_int(SEM_LFINISH_NAME, philo->id);
 	if (!name)
 		error_exit();
 	sem_unlink(name);
+	free(name);
 }

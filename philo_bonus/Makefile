@@ -1,9 +1,9 @@
-CC						=	clang
-CFLAGS					=	-Wall -Wextra -Werror -pthread -g3 #-fsanitize=address
+CC						=	cc
+CFLAGS					=	-Wall -Wextra -Werror -pthread
 RM						=	rm -f
 
 NAME					=	bonus
-PHILOSOPHERS			=	philo_bonus
+PHILOSOPHERS			=	philo_bonus 
 MAKEFILE				=	Makefile
 
 PHILO_SRC_DIR			=	src/

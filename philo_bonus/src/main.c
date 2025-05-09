@@ -6,7 +6,7 @@
 /*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 17:33:45 by ganersis          #+#    #+#             */
-/*   Updated: 2025/05/09 17:33:46 by ganersis         ###   ########.fr       */
+/*   Updated: 2025/05/09 19:38:47 by ganersis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	main(int argc, char **argv)
 	t_args			args;
 	t_semaphores	sems;
 
-	if (argc < 5 || argc > 6)
+	if (argc != 5 && argc != 6)
 	{
 		print_usage();
 		return (0);

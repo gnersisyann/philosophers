@@ -6,7 +6,7 @@
 /*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 19:15:45 by ganersis          #+#    #+#             */
-/*   Updated: 2025/04/29 19:15:46 by ganersis         ###   ########.fr       */
+/*   Updated: 2025/05/09 19:19:33 by ganersis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	main(int argc, char **argv)
 	t_table	*table;
 
 	table = NULL;
-	if (arg_check(argc))
+	if (arg_check(argc, argv))
 		return (1);
 	table = parse_args(argv);
 	if (!table)
