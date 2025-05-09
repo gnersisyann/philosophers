@@ -41,4 +41,5 @@ void	close_semaphores(t_semaphores *sems)
 	sem_close(sems->print);
 	sem_close(sems->meal_check);
 	sem_close(sems->dead_signal);
+	unlink_semaphores();
 }

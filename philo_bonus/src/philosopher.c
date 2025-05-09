@@ -37,19 +37,20 @@ void	run_philosophers(t_args *args, t_semaphores *sems)
 	run_helper(args, sems, philosophers);
 	pthread_create(&all_death_monitor_thread, NULL, monitor_all_deaths,
 		philosophers);
-	pthread_detach(all_death_monitor_thread);
 	if (args->must_eat != -1)
 	{
 		pthread_create(&all_meal_monitor_thread, NULL, monitor_all_meals,
 			philosophers);
-		pthread_detach(all_meal_monitor_thread);
 	}
 	i = -1;
 	while (++i < args->n_philo)
-		cleanup_local_semaphores(&philosophers[i]);
+		waitpid(philosophers[i].pid, NULL, 0);
 	i = -1;
 	while (++i < args->n_philo)
-		waitpid(philosophers[i].pid, NULL, 0);
+		cleanup_local_semaphores(&philosophers[i]);
+	pthread_join(all_death_monitor_thread, NULL);
+	if (args->must_eat != -1)
+		pthread_join(all_meal_monitor_thread, NULL);
 	free(philosophers);
 	close_semaphores(sems);
 }
