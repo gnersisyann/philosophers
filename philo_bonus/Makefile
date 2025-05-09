@@ -1,5 +1,5 @@
-CC						=	cc
-CFLAGS					=	-Wall -Wextra -Werror -pthread
+CC						=	clang
+CFLAGS					=	-Wall -Wextra -Werror -pthread -g3
 RM						=	rm -f
 
 NAME					=	bonus

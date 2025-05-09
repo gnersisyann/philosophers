@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ganersis <ganersis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 17:34:20 by ganersis          #+#    #+#             */
-/*   Updated: 2025/05/09 17:34:20 by ganersis         ###   ########.fr       */
+/*   Updated: 2025/05/09 20:27:58 by ganersis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	*monitor_death(void *arg)
 			update_finish(philo, true);
 			print_action(philo, RED "died" RESET);
 			sem_post(philo->sems->dead_signal);
+			usleep(1000);
 			break ;
 		}
 		usleep(1000);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ganersis <ganersis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 17:34:31 by ganersis          #+#    #+#             */
-/*   Updated: 2025/05/09 19:45:37 by ganersis         ###   ########.fr       */
+/*   Updated: 2025/05/09 20:50:45 by ganersis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,8 @@ static void	create_threads(pthread_t *death_monitor_thread,
 		pthread_t *meal_monitor_thread, t_philo *philo)
 {
 	pthread_create(death_monitor_thread, NULL, monitor_death, philo);
-	pthread_detach(*death_monitor_thread);
 	if (philo->args->must_eat != -1)
-	{
 		pthread_create(meal_monitor_thread, NULL, monitor_meals, philo);
-		pthread_detach(*meal_monitor_thread);
-	}
 }
 
 void	philosopher_routine(t_philo *philo)
@@ -89,6 +85,9 @@ void	philosopher_routine(t_philo *philo)
 		take_forks(philo);
 		routine_logic(philo);
 	}
-	usleep(1000);
+	pthread_join(death_monitor_thread, NULL);
+	if (philo->args->must_eat != -1)
+		pthread_join(meal_monitor_thread, NULL);
+	close_semaphores(philo->sems);
 	cleanup_local_semaphores(philo);
 }

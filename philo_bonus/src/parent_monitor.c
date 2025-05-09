@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parent_monitor.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ganersis <ganersis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 17:34:24 by ganersis          #+#    #+#             */
-/*   Updated: 2025/05/09 17:34:25 by ganersis         ###   ########.fr       */
+/*   Updated: 2025/05/09 20:45:14 by ganersis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	*monitor_all_deaths(void *arg)
 	philosophers = (t_philo *)arg;
 	sim_start_delay(philosophers->args->start_time);
 	sem_wait(philosophers->sems->dead_signal);
+	usleep(2000 * philosophers->args->n_philo);
 	i = -1;
 	while (++i < philosophers->args->n_philo)
 		kill(philosophers[i].pid, SIGKILL);
