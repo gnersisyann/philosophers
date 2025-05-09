@@ -6,7 +6,7 @@
 /*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 19:15:53 by ganersis          #+#    #+#             */
-/*   Updated: 2025/05/03 22:36:22 by ganersis         ###   ########.fr       */
+/*   Updated: 2025/05/09 12:24:13 by ganersis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,8 @@ t_philo	*init_philos(t_table *table)
 		if (pthread_mutex_init(&philos[i].meal_time_lock, NULL) != 0)
 			return (error_null("%s error: Could not create mutex.\n", NULL,
 					table));
-		philos[i].times_ate = 0;
-		philos[i].id = i;
-		philos[i].table = table;
-		philos[i].fork[0] = philos[i].id;
-		philos[i].fork[1] = (philos[i].id + 1) % philos->table->nb_philos;
-		philos[i].last_meal = 0;
+		philos[i] = (t_philo){.id = i, .times_ate = 0, .table = table,
+			.fork = {i, (i + 1) % table->nb_philos}, .last_meal = 0};
 		if (philos[i].id % 2 == 0)
 		{
 			philos[i].fork[0] = (philos[i].id + 1) % philos->table->nb_philos;
@@ -81,9 +77,8 @@ static int	check_bounds(int value, const char *name)
 	if (value <= 0 || value > INT_MAX)
 	{
 		printf(RED "Error:" RESET " %s is out of range. Must be a"
-					" positive integer within the range of \
-					" RED "int" RESET ".\n",
-				name);
+			" positive integer within the range of" RED " int" RESET ".\n",
+			name);
 		return (1);
 	}
 	return (0);

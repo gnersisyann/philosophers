@@ -6,11 +6,23 @@
 /*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 19:15:35 by ganersis          #+#    #+#             */
-/*   Updated: 2025/05/04 14:00:14 by ganersis         ###   ########.fr       */
+/*   Updated: 2025/05/09 12:13:32 by ganersis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
+
+static int	is_close_to_death(t_philo *philo)
+{
+	long	time_since_meal;
+	long	current_time;
+
+	pthread_mutex_lock(&philo->meal_time_lock);
+	current_time = get_time_in_ms();
+	time_since_meal = current_time - philo->last_meal;
+	pthread_mutex_unlock(&philo->meal_time_lock);
+	return (time_since_meal > (philo->table->time_to_die * 0.75));
+}
 
 void	*one_philo(t_philo *philo)
 {
@@ -39,6 +51,8 @@ void	*philo_routine(void *args)
 		think(philo, true);
 	while (has_simulation_stopped(philo->table) == false)
 	{
+		if (!is_close_to_death(philo))
+			usleep(500);
 		eat_and_sleep(philo);
 		if (has_simulation_stopped(philo->table))
 			break ;
