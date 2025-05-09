@@ -4,18 +4,17 @@ void	*monitor_death(void *arg)
 {
 	t_philo	*philo;
 	int		last_meal;
+	bool	finish;
 
 	philo = (t_philo *)arg;
 	sim_start_delay(philo->args->start_time);
 	while (1)
 	{
 		sem_wait(philo->local_finish);
-		if (philo->finish == true)
-		{
-			sem_post(philo->local_finish);
-			break ;
-		}
+		finish = philo->finish;
 		sem_post(philo->local_finish);
+		if (finish == true)
+			break ;
 		sem_wait(philo->local_last_meal);
 		last_meal = philo->last_meal;
 		sem_post(philo->local_last_meal);
@@ -26,9 +25,7 @@ void	*monitor_death(void *arg)
 			sem_post(philo->local_finish);
 			print_action(philo, RED "died" RESET);
 			sem_post(philo->sems->dead_signal);
-			// cleanup_local_semaphores(philo);
-			usleep(2000);
-			exit(0);
+			break;
 		}
 		usleep(1000);
 	}
@@ -39,18 +36,17 @@ void	*monitor_meals(void *arg)
 {
 	t_philo	*philo;
 	int		meals;
+	bool	finish;
 
 	philo = (t_philo *)arg;
 	sim_start_delay(philo->args->start_time);
 	while (1)
 	{
 		sem_wait(philo->local_finish);
-		if (philo->finish == true)
-		{
-			sem_post(philo->local_finish);
-			break ;
-		}
+		finish = philo->finish;
 		sem_post(philo->local_finish);
+		if (finish == true)
+			break ;
 		sem_wait(philo->local_meals_eaten);
 		meals = philo->meals_eaten;
 		sem_post(philo->local_meals_eaten);
@@ -62,9 +58,7 @@ void	*monitor_meals(void *arg)
 			sem_wait(philo->local_finish);
 			philo->finish = true;
 			sem_post(philo->local_finish);
-			// cleanup_local_semaphores(philo);
-			usleep(2000);
-			exit(0);
+			break;
 		}
 		usleep(1000);
 	}

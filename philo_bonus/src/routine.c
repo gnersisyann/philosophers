@@ -88,6 +88,8 @@ void	philosopher_routine(t_philo *philo)
 {
 	pthread_t	death_monitor_thread;
 	pthread_t	meal_monitor_thread;
+	bool finish = 0;
+
 
 	init_local_semaphores(philo);
 	pthread_create(&death_monitor_thread, NULL, monitor_death, philo);
@@ -102,6 +104,12 @@ void	philosopher_routine(t_philo *philo)
 		usleep(philo->args->t_eat * 500);
 	while (1)
 	{
+		sem_wait(philo->local_finish);
+		finish = philo->finish;
+		sem_post(philo->local_finish);
+		if (finish == true)
+			break ;
+
 		if (!is_close_to_death(philo))
 			usleep(500);
 		sem_wait(philo->sems->forks);
@@ -110,4 +118,5 @@ void	philosopher_routine(t_philo *philo)
 		print_action(philo, CYAN "has taken a fork" RESET);
 		routine_logic(philo);
 	}
+	cleanup_local_semaphores(philo);
 }
