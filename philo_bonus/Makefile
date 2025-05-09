@@ -18,7 +18,8 @@ PHILO_SRC				=	$(PHILO_SRC_DIR)main.c \
 							$(PHILO_SRC_DIR)philosopher.c \
 							$(PHILO_SRC_DIR)routine.c \
 							$(PHILO_SRC_DIR)semaphores.c \
-							$(PHILO_SRC_DIR)other.c
+							$(PHILO_SRC_DIR)other.c \
+							$(PHILO_SRC_DIR)local_semaphores.c
 
 OBJ_DIR					=	obj
 PHILO_OBJ				=	$(PHILO_SRC:%.c=$(OBJ_DIR)/%.o)

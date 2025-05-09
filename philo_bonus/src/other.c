@@ -21,3 +21,13 @@ int	ft_atoi(const char *str)
 		res = res * 10 + (str[i++] - '0');
 	return (res * sign);
 }
+
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	while (*s1 && (*s1 == *s2))
+	{
+		s1++;
+		s2++;
+	}
+	return ((unsigned char)*s1 - (unsigned char)*s2);
+}

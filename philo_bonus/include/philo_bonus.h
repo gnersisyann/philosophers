@@ -70,9 +70,12 @@ typedef struct s_philo
 long				get_time(void);
 void				precise_usleep(long time);
 void				print_action(t_philo *philo, const char *action);
-int					ft_atoi(const char *str);
 void				sim_start_delay(time_t start_time);
 long				calculate_think_time(t_philo *philo);
+
+// === other.c ===
+int					ft_strcmp(const char *s1, const char *s2);
+int					ft_atoi(const char *str);
 
 // === args.c ===
 int					parse_args(int argc, char **argv, t_args *args);
@@ -96,7 +99,9 @@ void				*monitor_meals(void *arg);
 void				*monitor_all_deaths(void *arg);
 void				*monitor_all_meals(void *arg);
 
-// === cleanup.c ===
+// === local_semaphores.c ===
+void				init_local_semaphores(t_philo *philo);
 void				cleanup_local_semaphores(t_philo *philo);
+
 
 #endif

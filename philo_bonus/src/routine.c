@@ -12,57 +12,6 @@ static int	is_close_to_death(t_philo *philo)
 	return (time_since_meal > (philo->args->t_die * 0.75));
 }
 
-static void	init_local_semaphores(t_philo *philo)
-{
-	char	name[32];
-
-	snprintf(name, sizeof(name), "%s%d", SEM_PAUSE_NAME, philo->id);
-	sem_unlink(name);
-	philo->local_last_meal = sem_open(name, O_CREAT | O_EXCL, 0644, 1);
-	if (philo->local_last_meal == SEM_FAILED)
-	{
-		printf("Error initializing last_meal semaphore for philosopher %d\n",
-			philo->id);
-		exit(1);
-	}
-	snprintf(name, sizeof(name), "%s%d_meals", SEM_PAUSE_NAME, philo->id);
-	sem_unlink(name);
-	philo->local_meals_eaten = sem_open(name, O_CREAT | O_EXCL, 0644, 1);
-	if (philo->local_meals_eaten == SEM_FAILED)
-	{
-		printf("Error initializing meals_eaten semaphore for philosopher %d\n",
-			philo->id);
-		sem_close(philo->local_last_meal);
-		exit(1);
-	}
-	snprintf(name, sizeof(name), "%s%d_finish", SEM_PAUSE_NAME, philo->id);
-	sem_unlink(name);
-	philo->local_finish = sem_open(name, O_CREAT | O_EXCL, 0644, 1);
-	if (philo->local_finish == SEM_FAILED)
-	{
-		printf("Error initializing finish semaphore for philosopher %d\n",
-			philo->id);
-		sem_close(philo->local_last_meal);
-		sem_close(philo->local_meals_eaten);
-		exit(1);
-	}
-}
-
-void	cleanup_local_semaphores(t_philo *philo)
-{
-	char	name[32];
-
-	sem_close(philo->local_last_meal);
-	sem_close(philo->local_meals_eaten);
-	sem_close(philo->local_finish);
-	snprintf(name, sizeof(name), "%s%d", SEM_PAUSE_NAME, philo->id);
-	sem_unlink(name);
-	snprintf(name, sizeof(name), "%s%d_meals", SEM_PAUSE_NAME, philo->id);
-	sem_unlink(name);
-	snprintf(name, sizeof(name), "%s%d_finish", SEM_PAUSE_NAME, philo->id);
-	sem_unlink(name);
-}
-
 static void	routine_logic(t_philo *philo)
 {
 	long	think_time;
@@ -88,9 +37,9 @@ void	philosopher_routine(t_philo *philo)
 {
 	pthread_t	death_monitor_thread;
 	pthread_t	meal_monitor_thread;
-	bool finish = 0;
+	bool		finish;
 
-
+	finish = 0;
 	init_local_semaphores(philo);
 	pthread_create(&death_monitor_thread, NULL, monitor_death, philo);
 	pthread_detach(death_monitor_thread);
@@ -109,9 +58,8 @@ void	philosopher_routine(t_philo *philo)
 		sem_post(philo->local_finish);
 		if (finish == true)
 			break ;
-
 		if (!is_close_to_death(philo))
-			usleep(500);
+			usleep(philo->args->t_die / 10);
 		sem_wait(philo->sems->forks);
 		print_action(philo, CYAN "has taken a fork" RESET);
 		sem_wait(philo->sems->forks);

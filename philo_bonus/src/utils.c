@@ -1,10 +1,10 @@
 #include "../include/philo_bonus.h"
-#include <string.h>
 
 void	sim_start_delay(time_t start_time)
 {
-	while (get_time() < start_time){
-		usleep(100) ;
+	while (get_time() < start_time)
+	{
+		usleep(100);
 	}
 }
 
@@ -15,7 +15,7 @@ void	print_action(t_philo *philo, const char *action)
 	sem_wait(philo->sems->print);
 	timestamp = get_time() - philo->args->start_time;
 	printf("%ld %d %s\n", timestamp, philo->id, action);
-	if (strcmp(action, RED "died" RESET) != 0)
+	if (ft_strcmp(action, RED "died" RESET) != 0)
 		sem_post(philo->sems->print);
 }
 
