@@ -5,17 +5,6 @@ This repository contains a solution to the classic "Dining Philosophers" problem
 * **Mandatory** (`philo`) — basic implementation using threads and mutexes.
 * **Bonus** (`philo_bonus`) — extended version using processes and semaphores.
 
-## 📚 Table of Contents
-
-* [Project Description](#project-description)
-* [Implementation Highlights](#implementation-highlights)
-
-  * [Mandatory](#mandatory)
-  * [Bonus](#bonus)
-* [Build & Run](#build--run)
-* [Usage Examples](#usage-examples)
-* [Best Practices & Notes](#best-practices--notes)
-
 ## 📖 Project Description
 
 The project simulates the behavior of N philosophers sitting at a table and alternating between four states:
