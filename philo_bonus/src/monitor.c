@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ganersis <ganersis@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 17:34:20 by ganersis          #+#    #+#             */
-/*   Updated: 2025/05/09 20:27:58 by ganersis         ###   ########.fr       */
+/*   Updated: 2025/05/12 23:50:19 by ganersis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ static void	update_finish(t_philo *philo, bool status)
 void	*monitor_death(void *arg)
 {
 	t_philo	*philo;
-	int		last_meal;
 	bool	finish;
 
 	philo = (t_philo *)arg;
@@ -40,16 +39,16 @@ void	*monitor_death(void *arg)
 		if (finish == true)
 			break ;
 		sem_wait(philo->local_last_meal);
-		last_meal = philo->last_meal;
-		sem_post(philo->local_last_meal);
 		if (get_time() - philo->last_meal >= philo->args->t_die)
 		{
 			update_finish(philo, true);
 			print_action(philo, RED "died" RESET);
 			sem_post(philo->sems->dead_signal);
 			usleep(1000);
+			sem_post(philo->local_last_meal);
 			break ;
 		}
+		sem_post(philo->local_last_meal);
 		usleep(1000);
 	}
 	return (NULL);

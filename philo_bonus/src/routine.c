@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ganersis <ganersis@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 17:34:31 by ganersis          #+#    #+#             */
-/*   Updated: 2025/05/09 20:50:45 by ganersis         ###   ########.fr       */
+/*   Updated: 2025/05/12 23:49:49 by ganersis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,21 @@ static void	take_forks(t_philo *philo)
 	print_action(philo, CYAN "has taken a fork" RESET);
 }
 
-static void	create_threads(pthread_t *death_monitor_thread,
-		pthread_t *meal_monitor_thread, t_philo *philo)
+static void	thread_action(pthread_t *death_monitor_thread,
+		pthread_t *meal_monitor_thread, t_philo *philo, int mode)
 {
-	pthread_create(death_monitor_thread, NULL, monitor_death, philo);
-	if (philo->args->must_eat != -1)
-		pthread_create(meal_monitor_thread, NULL, monitor_meals, philo);
+	if (mode == 1)
+	{
+		pthread_create(death_monitor_thread, NULL, monitor_death, philo);
+		if (philo->args->must_eat != -1)
+			pthread_create(meal_monitor_thread, NULL, monitor_meals, philo);
+	}
+	else if (mode == 2)
+	{
+		pthread_join(*death_monitor_thread, NULL);
+		if (philo->args->must_eat != -1)
+			pthread_join(*meal_monitor_thread, NULL);
+	}
 }
 
 void	philosopher_routine(t_philo *philo)
@@ -69,7 +78,7 @@ void	philosopher_routine(t_philo *philo)
 
 	finish = 0;
 	init_local_semaphores(philo);
-	create_threads(&death_monitor_thread, &meal_monitor_thread, philo);
+	thread_action(&death_monitor_thread, &meal_monitor_thread, philo, 1);
 	sim_start_delay(philo->args->start_time);
 	if (philo->id % 2 == 0)
 		usleep(philo->args->t_eat * 500);
@@ -85,9 +94,7 @@ void	philosopher_routine(t_philo *philo)
 		take_forks(philo);
 		routine_logic(philo);
 	}
-	pthread_join(death_monitor_thread, NULL);
-	if (philo->args->must_eat != -1)
-		pthread_join(meal_monitor_thread, NULL);
+	thread_action(&death_monitor_thread, &meal_monitor_thread, philo, 2);
 	close_semaphores(philo->sems);
 	cleanup_local_semaphores(philo);
 }
