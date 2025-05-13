@@ -6,7 +6,7 @@
 /*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 17:34:31 by ganersis          #+#    #+#             */
-/*   Updated: 2025/05/12 23:49:49 by ganersis         ###   ########.fr       */
+/*   Updated: 2025/05/13 10:28:36 by ganersis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	philosopher_routine(t_philo *philo)
 	thread_action(&death_monitor_thread, &meal_monitor_thread, philo, 1);
 	sim_start_delay(philo->args->start_time);
 	if (philo->id % 2 == 0)
-		usleep(philo->args->t_eat * 500);
+		usleep(philo->args->t_eat * 100);
 	while (1)
 	{
 		sem_wait(philo->local_finish);

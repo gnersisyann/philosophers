@@ -6,7 +6,7 @@
 /*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 17:34:20 by ganersis          #+#    #+#             */
-/*   Updated: 2025/05/12 23:50:19 by ganersis         ###   ########.fr       */
+/*   Updated: 2025/05/13 10:21:57 by ganersis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void	*monitor_death(void *arg)
 			update_finish(philo, true);
 			print_action(philo, RED "died" RESET);
 			sem_post(philo->sems->dead_signal);
-			usleep(1000);
 			sem_post(philo->local_last_meal);
 			break ;
 		}

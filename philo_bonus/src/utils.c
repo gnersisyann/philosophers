@@ -6,7 +6,7 @@
 /*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 17:34:32 by ganersis          #+#    #+#             */
-/*   Updated: 2025/05/09 17:34:33 by ganersis         ###   ########.fr       */
+/*   Updated: 2025/05/13 10:26:47 by ganersis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ void	precise_usleep(long time_in_ms)
 		if (remain > 2)
 		{
 			if (remain > 10)
-				usleep((remain - 2) / 1000);
+				usleep((remain - 2) * 1000);
 			else
-				usleep((remain * 800) / 1000);
+				usleep(remain * 800);
 		}
 		else
 		{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosopher.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ganersis <ganersis@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ganersis <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 17:34:26 by ganersis          #+#    #+#             */
-/*   Updated: 2025/05/09 20:42:53 by ganersis         ###   ########.fr       */
+/*   Updated: 2025/05/13 10:17:43 by ganersis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ static void	run_helper(t_args *args, t_semaphores *sems, t_philo *philosophers)
 		if (pid == 0)
 		{
 			philosopher_routine(&philosophers[i]);
+			free(philosophers);
 			exit(0);
 		}
 		philosophers[i].pid = pid;
